@@ -33,6 +33,13 @@ In this architecture:
 - **Snap-to-Ground**: Objects automatically snap to the terrain.
 - **Asset Scanner**: Auto-scans `assets/models` and generates a manifest for physics inference.
 
+## 📋 Version Compatibility
+
+| bevy_ai_editor | Bevy |
+|:--------------:|:----:|
+| 0.1.x | 0.17 |
+| 0.2.x | 0.18 |
+
 ## 📦 Architecture
 
 ```mermaid
