@@ -1,0 +1,32 @@
+{
+  "models/tree-small.glb": {
+    "collider": "capsule",
+    "size": [
+      2.104442,
+      5.67,
+      2.4299998
+    ],
+    "center_offset": [
+      0.0,
+      2.835,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/fence.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.47500002,
+      0.26999998,
+      0.075
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  }
+}
