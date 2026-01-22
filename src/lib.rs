@@ -4,7 +4,7 @@ use bevy::scene::SceneInstanceReady;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::{Read, Write};
+use std::io::Write;
 use std::sync::{Arc, RwLock};
 use std::thread;
 use tiny_http::{Method, Response, Server};

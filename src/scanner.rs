@@ -3,7 +3,7 @@ use bevy::gltf::{Gltf, GltfMesh};
 use bevy::prelude::*;
 use std::collections::HashMap;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 pub struct AssetScannerPlugin;
 
