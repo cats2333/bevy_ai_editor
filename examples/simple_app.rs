@@ -1,4 +1,5 @@
 use avian3d::prelude::*;
+use bevy::ecs::event::EventReader;
 use bevy::input::mouse::{MouseMotion, MouseWheel};
 use bevy::prelude::*;
 use bevy_ai_editor::{AiEditorConfig, AiEditorPlugin};
