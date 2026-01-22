@@ -1,5 +1,4 @@
 use avian3d::prelude::*;
-use bevy::ecs::event::EventReader;
 use bevy::input::mouse::{MouseMotion, MouseWheel};
 use bevy::prelude::*;
 use bevy_ai_editor::{AiEditorConfig, AiEditorPlugin};
@@ -64,8 +63,8 @@ fn setup(
 
 fn camera_control_system(
     time: Res<Time>,
-    mut mouse_motion: EventReader<MouseMotion>,
-    mut mouse_wheel: EventReader<MouseWheel>,
+    mut mouse_motion: MessageReader<MouseMotion>,
+    mut mouse_wheel: MessageReader<MouseWheel>,
     mouse_button: Res<ButtonInput<MouseButton>>,
     keyboard: Res<ButtonInput<KeyCode>>,
     mut query: Query<(&mut Transform, &CameraController)>,
