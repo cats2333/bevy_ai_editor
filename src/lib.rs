@@ -339,7 +339,7 @@ fn handle_ai_commands(
 }
 
 fn on_scene_ready_add_collider(
-    trigger: Trigger<SceneInstanceReady>,
+    trigger: On<SceneInstanceReady>,
     mut commands: Commands,
     query: Query<&NeedCollider>,
     children: Query<&Children>,

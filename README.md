@@ -6,7 +6,7 @@ This project is designed to be the **"Hands"** for an AI Agent. It allows AI mod
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 [![Crates.io](https://img.shields.io/crates/v/bevy_ai_editor.svg)](https://crates.io/crates/bevy_ai_editor)
-![Bevy](https://img.shields.io/badge/Bevy-0.17.3-orange)
+![Bevy](https://img.shields.io/badge/Bevy-0.18-orange)
 ![OpenCode](https://img.shields.io/badge/AI-OpenCode-purple)
 
 ## 🌟 Why this exists? (The OpenCode Workflow)

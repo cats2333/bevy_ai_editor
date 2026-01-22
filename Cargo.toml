@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ai_editor"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "A remote AI level editor plugin for Bevy engine, enabling Python-based scene manipulation for AI agents."
 license = "MIT"
@@ -11,8 +11,8 @@ keywords = ["bevy", "gamedev", "editor", "ai", "python"]
 categories = ["game-development", "development-tools"]
 
 [dependencies]
-bevy = { version = "0.17.3", default-features = true }
-avian3d = "0.4"
+bevy = { version = "0.18", default-features = true }
+avian3d = "0.5"
 tiny_http = "0.12"
 flume = "0.11"
 serde = { version = "1.0", features = ["derive"] }
