@@ -2,76 +2,71 @@
 
 An experimental **Remote Level Editor** plugin for the [Bevy](https://bevyengine.org/) game engine.
 
-This plugin allows you to manipulate your 3D scene in **real-time** using external scripts (Python, etc.) via a lightweight HTTP API. It is designed for:
-
-- 🤖 **AI-Assisted Level Generation**: Use Python's rich ecosystem (NumPy, PyTorch) to procedurally generate levels.
-- 🎮 **Remote Debugging**: Spawn and move objects without recompiling Rust code.
-- 📐 **Rapid Prototyping**: Script scene layouts instantly.
+This project is designed to be the **"Hands"** for an AI Agent. It allows AI models (like **OpenCode**) to manipulate a 3D game world by writing and executing Python code.
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Bevy](https://img.shields.io/badge/Bevy-0.17.3-orange)
+![OpenCode](https://img.shields.io/badge/AI-OpenCode-purple)
+
+## 🌟 Why this exists? (The OpenCode Workflow)
+
+This tool bridges the gap between **LLM Code Generation** and **Game Engines**.
+
+- **Traditional Workflow**: You manually drag-and-drop objects in an editor.
+- **Procedural Workflow**: You write complex algorithms to generate levels.
+- **OpenCode Workflow**: You tell the AI **"Make a spooky forest with a cabin in the center"**, and the AI:
+    1.  Writes a Python script using `BevyAiClient`.
+    2.  Calculates positions, rotations, and layout logic.
+    3.  Executes the script to build the scene in real-time.
+
+In this architecture:
+- **Bevy**: The **Canvas** (Renderer & Physics).
+- **Python**: The **Brush** (API & Logic).
+- **OpenCode**: The **Artist** (Intelligence & Control).
 
 ## 🚀 Features
 
-- **HTTP JSON API**: Simple REST API listening on port `15703` (configurable).
-- **Remote Spawning**: Spawn GLTF models or builtin shapes (Cube, Sphere, Capsule) remotely.
-- **Auto Physics**: Automatically generates **Avian3D** colliders (Capsule, Cuboid, Trimesh) based on mesh analysis.
-- **Snap-to-Ground**: Objects can automatically snap to the terrain using raycasts.
-- **Asset Scanner**: Auto-scans `assets/models`, computes AABBs, and generates a manifest file for physics inference.
-- **Scene Persistence**: Save your generated level to JSON (`assets/levels/`).
+- **HTTP JSON API**: Simple REST API listening on port `15703`.
+- **Remote Spawning**: Spawn GLTF models or builtin shapes remotely.
+- **Auto Physics**: Automatically generates **Avian3D** colliders (Capsule, Cuboid, Trimesh).
+- **Snap-to-Ground**: Objects automatically snap to the terrain.
+- **Asset Scanner**: Auto-scans `assets/models` and generates a manifest for physics inference.
 
 ## 📦 Architecture
 
 ```mermaid
-graph LR
-    A[Python Script] -- HTTP POST /spawn --> B(Bevy Plugin)
-    A -- HTTP POST /save --> B
-    B -- Auto Scan --> C[Asset Manifest]
-    B -- Spawns --> D[Game World]
-    D -- Raycast --> E[Ground Snapping]
+graph TD
+    User[User / Product Manager] -->|Prompts| AI[OpenCode / AI Agent]
+    AI -->|Writes & Runs| Py[Python Script]
+    Py -- HTTP POST /spawn --> Bevy[Bevy Engine]
+    Bevy -- Asset Scanner --> Manifest[Physics Manifest]
+    Bevy -->|Visual Feedback| User
 ```
-
-1. **Rust Side**: The `AiEditorPlugin` starts a background HTTP server thread.
-2. **Python Side**: The `BevyAiClient` sends JSON commands to the server.
-3. **Synchronization**: Commands are sent via channels (`flume`) to the main Bevy thread to ensure thread safety.
 
 ## 🛠️ Quick Start
 
-### 1. Prerequisites
-
-- **Rust**: Install via [rustup.rs](https://rustup.rs/).
-- **Python**: Install Python 3.x and the `requests` library:
-  ```bash
-  pip install requests
-  ```
-
-### 2. Run the Bevy App
-
-Run the included example app which has the plugin enabled:
+### 1. Run the Bevy App (The Canvas)
 
 ```bash
 cargo run --example simple_app
 ```
 
-*You should see a window with a green ground plane. Controls: WASD to move, Right Click to rotate.*
+### 2. Let OpenCode Draw (The Artist)
 
-### 3. Run the Python Script
+You can now ask OpenCode (or write Python yourself):
 
-In a separate terminal, run one of the demos:
+> *"I see you have `tree.glb` and `house.glb` in the assets. Write a python script using `BevyAiClient` to create a circular village with 5 houses and trees surrounding them."*
+
+Or run the demos manually:
 
 ```bash
-# Demo 1: Spawn a grid of objects
 python examples/demos/demo_01_grid.py
-
-# Demo 2: Procedural Forest Generation
 python examples/demos/demo_02_forest.py
 ```
 
-*Watch as objects magically appear in your Bevy window!*
-
 ## 🐍 Python Client API
 
-The `BevyAiClient` class (`python/bevy_ai_client.py`) provides a simple interface:
+The `BevyAiClient` (`python/bevy_ai_client.py`) is what OpenCode uses to interact with the world:
 
 ```python
 from python.bevy_ai_client import BevyAiClient
@@ -94,19 +89,15 @@ client.save_scene("my_cool_level.json")
 bevy_ai_editor/
 ├── assets/             # Game assets (models, textures)
 ├── examples/           # Rust examples and Python demos
-│   ├── simple_app.rs   # Main Rust entry point example
-│   └── demos/          # Python scripts (grid, forest, etc.)
 ├── python/             # Python client library
 │   └── bevy_ai_client.py
 ├── src/                # Rust Source Code
 │   ├── lib.rs          # Plugin core & HTTP server
-│   └── scanner.rs      # Asset auto-scanner & physics inference
+│   └── scanner.rs      # Asset auto-scanner
 └── Cargo.toml          # Rust dependencies
 ```
 
 ## 📝 Configuration
-
-You can configure the plugin resources in your Bevy app:
 
 ```rust
 app.insert_resource(AiEditorConfig {
@@ -115,10 +106,6 @@ app.insert_resource(AiEditorConfig {
     save_dir: "assets/levels".to_string(),
 });
 ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit PRs.
 
 ## 📄 License
 
