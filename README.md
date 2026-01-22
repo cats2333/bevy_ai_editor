@@ -5,6 +5,7 @@ An experimental **Remote Level Editor** plugin for the [Bevy](https://bevyengine
 This project is designed to be the **"Hands"** for an AI Agent. It allows AI models (like **OpenCode**) to manipulate a 3D game world by writing and executing Python code.
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
+[![Crates.io](https://img.shields.io/crates/v/bevy_ai_editor.svg)](https://crates.io/crates/bevy_ai_editor)
 ![Bevy](https://img.shields.io/badge/Bevy-0.17.3-orange)
 ![OpenCode](https://img.shields.io/badge/AI-OpenCode-purple)
 
