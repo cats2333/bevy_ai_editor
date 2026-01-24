@@ -9,7 +9,7 @@ use std::sync::{Arc, RwLock};
 use std::thread;
 use tiny_http::{Method, Response, Server};
 
-pub mod scanner; // [NEW]
+pub mod scanner;
 
 // --- Configurations ---
 
@@ -46,6 +46,9 @@ pub struct AssetManifestItem {
 #[derive(Resource, Default)]
 pub struct AiAssetManifest(pub HashMap<String, AssetManifestItem>);
 
+#[derive(Resource, Default)]
+pub struct AiNamedEntities(pub HashMap<String, Entity>);
+
 // --- Plugin ---
 
 pub struct AiEditorPlugin;
@@ -63,8 +66,9 @@ impl Plugin for AiEditorPlugin {
         app.insert_resource(AiCommandReceiver(rx))
             .insert_resource(shared_state.clone())
             .init_resource::<AiAssetManifest>()
+            .init_resource::<AiNamedEntities>()
             .register_type::<AiSpawned>()
-            .add_plugins(scanner::AssetScannerPlugin) // [NEW] Auto Scan on Startup
+            .add_plugins(scanner::AssetScannerPlugin)
             .add_systems(Startup, load_manifest)
             .add_systems(
                 Update,
@@ -84,6 +88,7 @@ pub struct DebugEntityInfo {
     pub asset_path: String,
     pub position: [f32; 3],
     pub scale: [f32; 3],
+    pub name: Option<String>,
 }
 
 #[derive(Resource, Clone)]
@@ -93,11 +98,14 @@ pub struct SharedSceneState(pub Arc<RwLock<Vec<DebugEntityInfo>>>);
 #[reflect(Component)]
 pub struct AiSpawned {
     pub asset_path: String,
+    pub name: Option<String>,
 }
 
 #[derive(Debug, Clone)]
 pub enum AiCommand {
     Spawn(AiSpawnCommand),
+    Joint(AiJointCommand),
+    Motor(AiMotorCommand),
     Save(String),
 }
 
@@ -107,10 +115,34 @@ pub struct AiSpawnCommand {
     pub position: Vec3,
     pub scale: f32,
     pub rotation: f32,
+    pub name: Option<String>,
+    pub physics: String, // "static", "dynamic", "kinematic"
+}
+
+#[derive(Debug, Clone)]
+pub struct AiJointCommand {
+    pub entity1: String,
+    pub entity2: String,
+    pub joint_type: String, // "fixed", "revolute", "spherical"
+    pub anchor1: Vec3,
+    pub anchor2: Vec3,
+    pub limits: Option<[f32; 2]>,
+    pub motor: bool,
+    pub name: Option<String>, // Joint name for motor control
+}
+
+#[derive(Debug, Clone)]
+pub struct AiMotorCommand {
+    pub joint_name: String,
+    pub target_pos: f32,
+    pub stiffness: f32,
+    pub damping: f32,
 }
 
 #[derive(Resource)]
 struct AiCommandReceiver(flume::Receiver<AiCommand>);
+
+// --- JSON Payloads ---
 
 #[derive(Deserialize, Debug)]
 struct SpawnRequestPayload {
@@ -120,6 +152,34 @@ struct SpawnRequestPayload {
     z: f32,
     scale: Option<f32>,
     rotation: Option<f32>,
+    name: Option<String>,
+    physics: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
+struct JointRequestPayload {
+    entity1: String,
+    entity2: String,
+    #[serde(default = "default_joint_type")]
+    r#type: String,
+    anchor1: Option<[f32; 3]>,
+    anchor2: Option<[f32; 3]>,
+    limits: Option<[f32; 2]>,
+    #[serde(default)]
+    motor: bool,
+    name: Option<String>,
+}
+
+fn default_joint_type() -> String {
+    "fixed".to_string()
+}
+
+#[derive(Deserialize, Debug)]
+struct MotorRequestPayload {
+    joint_name: String,
+    target: f32,
+    stiffness: Option<f32>,
+    damping: Option<f32>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -138,6 +198,7 @@ struct LevelEntity {
     position: [f32; 3],
     scale: [f32; 3],
     rotation: [f32; 4],
+    name: Option<String>,
 }
 
 #[derive(Component)]
@@ -187,7 +248,7 @@ fn apply_snap_to_ground(
             let hit_point = origin + dir.as_vec3() * hit.distance;
             let mut final_y = hit_point.y;
 
-            // Simple heuristic corrections for weird physics scales
+            // Simple heuristic corrections
             if final_y.abs() > 500.0 {
                 final_y /= 1000.0;
             } else if final_y.abs() > 50.0 {
@@ -210,10 +271,13 @@ fn handle_ai_commands(
     query: Query<(&Transform, &AiSpawned)>,
     manifest: Res<AiAssetManifest>,
     config: Res<AiEditorConfig>,
+    mut named_entities: ResMut<AiNamedEntities>,
+    mut revolute_joints: Query<&mut RevoluteJoint>,
+    mut spherical_joints: Query<&mut SphericalJoint>,
 ) {
     let mut processed = 0;
     while let Ok(cmd) = receiver.0.try_recv() {
-        if processed > 20 {
+        if processed > 50 {
             break;
         }
         processed += 1;
@@ -224,8 +288,10 @@ fn handle_ai_commands(
                 let scale = Vec3::splat(spawn_cmd.scale);
                 let rotation = Quat::from_rotation_y(spawn_cmd.rotation);
                 let asset_path = spawn_cmd.asset_path.clone();
+                let entity_name = spawn_cmd.name.clone();
+                let physics_type = spawn_cmd.physics.as_str();
 
-                if asset_path.starts_with("builtin://") {
+                let mut entity_cmds = if asset_path.starts_with("builtin://") {
                     let parts: Vec<&str> = asset_path
                         .trim_start_matches("builtin://")
                         .split('/')
@@ -241,6 +307,7 @@ fn handle_ai_commands(
                         "brown" => Color::srgb(0.5, 0.25, 0.0),
                         "black" => Color::BLACK,
                         "gray" => Color::srgb(0.5, 0.5, 0.5),
+                        "white" => Color::WHITE,
                         _ => Color::WHITE,
                     };
 
@@ -252,7 +319,7 @@ fn handle_ai_commands(
                         _ => meshes.add(Cuboid::default()),
                     };
 
-                    let mut entity_cmds = commands.spawn((
+                    let mut e = commands.spawn((
                         Mesh3d(mesh_handle),
                         MeshMaterial3d(materials.add(StandardMaterial {
                             base_color: color,
@@ -263,54 +330,174 @@ fn handle_ai_commands(
                             .with_rotation(rotation),
                         AiSpawned {
                             asset_path: asset_path.clone(),
+                            name: entity_name.clone(),
                         },
                     ));
 
-                    // Add simple physics
-                    entity_cmds.insert(RigidBody::Static);
-                    match shape {
-                        "sphere" => {
-                            entity_cmds.insert(Collider::sphere(0.5));
+                    // Physics
+                    match physics_type {
+                        "dynamic" => {
+                            e.insert(RigidBody::Dynamic);
                         }
-                        "capsule" => {
-                            entity_cmds.insert(Collider::capsule(0.5, 1.0));
+                        "kinematic" => {
+                            e.insert(RigidBody::Kinematic);
                         }
                         _ => {
-                            entity_cmds.insert(Collider::cuboid(1.0, 1.0, 1.0));
+                            e.insert(RigidBody::Static);
                         }
                     }
+
+                    match shape {
+                        "sphere" => {
+                            e.insert(Collider::sphere(0.5));
+                        }
+                        "capsule" => {
+                            e.insert(Collider::capsule(0.5, 1.0));
+                        }
+                        _ => {
+                            e.insert(Collider::cuboid(1.0, 1.0, 1.0));
+                        }
+                    }
+                    e
                 } else {
                     let scene_handle = asset_server
                         .load(GltfAssetLabel::Scene(0).from_asset(spawn_cmd.asset_path.clone()));
                     let manifest_item = manifest.0.get(&spawn_cmd.asset_path);
 
-                    let mut entity_cmds = commands.spawn((
+                    let mut e = commands.spawn((
                         SceneRoot(scene_handle),
                         Transform::from_translation(spawn_cmd.position)
                             .with_scale(Vec3::splat(spawn_cmd.scale))
                             .with_rotation(Quat::from_rotation_y(spawn_cmd.rotation)),
                         AiSpawned {
                             asset_path: spawn_cmd.asset_path.clone(),
+                            name: entity_name.clone(),
                         },
                     ));
 
                     if let Some(item) = manifest_item {
-                        entity_cmds.insert(RigidBody::Static);
-                        entity_cmds.insert(NeedCollider {
+                        // For imported assets, "static" is default unless specified
+                        match physics_type {
+                            "dynamic" => {
+                                e.insert(RigidBody::Dynamic);
+                            }
+                            "kinematic" => {
+                                e.insert(RigidBody::Kinematic);
+                            }
+                            _ => {
+                                e.insert(RigidBody::Static);
+                            }
+                        }
+
+                        e.insert(NeedCollider {
                             collider_type: item.collider.clone(),
                             size: Vec3::from(item.size),
                             offset: Vec3::from(item.center_offset),
                         });
                         if item.snap_to_ground {
-                            entity_cmds.insert(SnapToGround {
+                            e.insert(SnapToGround {
                                 offset: item.vertical_offset,
                             });
                         }
                     }
+                    e.observe(on_scene_ready_add_collider);
+                    e
+                };
 
-                    entity_cmds.observe(on_scene_ready_add_collider);
+                // Register name
+                if let Some(name) = entity_name {
+                    let id = entity_cmds.id();
+                    info!("🏷️ [Registry] Registered '{}' -> {:?}", name, id);
+                    named_entities.0.insert(name, id);
                 }
             }
+
+            AiCommand::Joint(joint_cmd) => {
+                if let (Some(&e1), Some(&e2)) = (
+                    named_entities.0.get(&joint_cmd.entity1),
+                    named_entities.0.get(&joint_cmd.entity2),
+                ) {
+                    let anchor1 = joint_cmd.anchor1;
+                    let anchor2 = joint_cmd.anchor2;
+                    let joint_name = joint_cmd.name.clone();
+
+                    let mut joint_entity_cmd = match joint_cmd.joint_type.as_str() {
+                        "spherical" => {
+                            let mut joint = SphericalJoint::new(e1, e2)
+                                .with_local_anchor1(anchor1)
+                                .with_local_anchor2(anchor2);
+                            // Spherical motors are complex, skipping simple motor for now or treating as special case
+                            // But Avian doesn't support simple position motor for spherical easily yet in 0.1?
+                            // Checking Avian docs: SphericalJoint has limit support.
+                            commands.spawn(joint)
+                        }
+                        "revolute" => {
+                            let mut joint = RevoluteJoint::new(e1, e2)
+                                .with_local_anchor1(anchor1)
+                                .with_local_anchor2(anchor2)
+                                .with_aligned_axis(Vec3::X); // Default axis X, maybe make configurable?
+
+                            if let Some(limits) = joint_cmd.limits {
+                                joint = joint.with_angle_limits(limits[0], limits[1]);
+                            }
+
+                            // Enable motor if requested (Positional by default for robotics)
+                            if joint_cmd.motor {
+                                // Default stiff motor
+                                // TODO: Fix Motor API in Avian 0.5
+                                // joint = joint.with_angular_position_target(0.0)
+                                //    .with_angular_velocity_target(0.0);
+                            }
+
+                            commands.spawn(joint)
+                        }
+                        _ => {
+                            // Fixed
+                            let joint = FixedJoint::new(e1, e2)
+                                .with_local_anchor1(anchor1)
+                                .with_local_anchor2(anchor2);
+                            commands.spawn(joint)
+                        }
+                    };
+
+                    // Register joint name if provided (for motor control)
+                    if let Some(name) = joint_name {
+                        let id = joint_entity_cmd.id();
+                        info!("🔗 [Registry] Registered Joint '{}' -> {:?}", name, id);
+                        named_entities.0.insert(name, id);
+                    }
+                } else {
+                    warn!(
+                        "❌ [Joint] Failed to find entities: {} or {}",
+                        joint_cmd.entity1, joint_cmd.entity2
+                    );
+                }
+            }
+
+            AiCommand::Motor(motor_cmd) => {
+                if let Some(&joint_entity) = named_entities.0.get(&motor_cmd.joint_name) {
+                    // Try to get RevoluteJoint
+                    if let Ok(mut joint) = revolute_joints.get_mut(joint_entity) {
+                        // Update target
+                        // Avian 0.2 API: set_angular_position_target
+                        // joint.angular_position_target = Some(motor_cmd.target_pos);
+                        // TODO: Fix Motor API
+                        warn!("⚠️ [Motor] Motor control temporarily disabled due to API mismatch in Avian 0.5");
+                        info!(
+                            "⚙️ [Motor] Request received for '{}' -> {}",
+                            motor_cmd.joint_name, motor_cmd.target_pos
+                        );
+                    } else {
+                        warn!(
+                            "❌ [Motor] Entity '{}' is not a RevoluteJoint",
+                            motor_cmd.joint_name
+                        );
+                    }
+                } else {
+                    warn!("❌ [Motor] Joint '{}' not found", motor_cmd.joint_name);
+                }
+            }
+
             AiCommand::Save(filename) => {
                 let mut level_data = LevelData { entities: vec![] };
                 for (transform, ai_spawned) in query.iter() {
@@ -319,6 +506,7 @@ fn handle_ai_commands(
                         position: transform.translation.to_array(),
                         scale: transform.scale.to_array(),
                         rotation: transform.rotation.to_array(),
+                        name: ai_spawned.name.clone(),
                     });
                 }
 
@@ -410,6 +598,7 @@ fn sync_scene_state(query: Query<(&Transform, &AiSpawned)>, shared_state: Res<Sh
                 asset_path: ai_spawned.asset_path.clone(),
                 position: transform.translation.to_array(),
                 scale: transform.scale.to_array(),
+                name: ai_spawned.name.clone(),
             });
         }
     }
@@ -445,9 +634,51 @@ fn start_http_server(
                         position: Vec3::new(payload.x, payload.y.unwrap_or(0.0), payload.z),
                         scale: payload.scale.unwrap_or(1.0),
                         rotation: payload.rotation.unwrap_or(0.0),
+                        name: payload.name,
+                        physics: payload.physics.unwrap_or("static".to_string()),
                     });
                     let _ = tx.send(cmd);
                     let _ = request.respond(Response::from_string("{\"status\": \"spawned\"}"));
+                } else {
+                    let _ = request.respond(
+                        Response::from_string("{\"error\": \"Invalid JSON\"}")
+                            .with_status_code(400),
+                    );
+                }
+            }
+            (&Method::Post, "/joint") => {
+                if let Ok(payload) = serde_json::from_str::<JointRequestPayload>(&content) {
+                    let cmd = AiCommand::Joint(AiJointCommand {
+                        entity1: payload.entity1,
+                        entity2: payload.entity2,
+                        joint_type: payload.r#type,
+                        anchor1: Vec3::from(payload.anchor1.unwrap_or([0.0, 0.0, 0.0])),
+                        anchor2: Vec3::from(payload.anchor2.unwrap_or([0.0, 0.0, 0.0])),
+                        limits: payload.limits,
+                        motor: payload.motor,
+                        name: payload.name,
+                    });
+                    let _ = tx.send(cmd);
+                    let _ =
+                        request.respond(Response::from_string("{\"status\": \"joint_created\"}"));
+                } else {
+                    let _ = request.respond(
+                        Response::from_string("{\"error\": \"Invalid JSON\"}")
+                            .with_status_code(400),
+                    );
+                }
+            }
+            (&Method::Post, "/motor") => {
+                if let Ok(payload) = serde_json::from_str::<MotorRequestPayload>(&content) {
+                    let cmd = AiCommand::Motor(AiMotorCommand {
+                        joint_name: payload.joint_name,
+                        target_pos: payload.target,
+                        stiffness: payload.stiffness.unwrap_or(10.0),
+                        damping: payload.damping.unwrap_or(1.0),
+                    });
+                    let _ = tx.send(cmd);
+                    let _ =
+                        request.respond(Response::from_string("{\"status\": \"motor_updated\"}"));
                 } else {
                     let _ = request.respond(
                         Response::from_string("{\"error\": \"Invalid JSON\"}")

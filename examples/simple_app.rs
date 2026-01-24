@@ -25,6 +25,7 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .add_plugins(PhysicsPlugins::default())
+        .add_plugins(PhysicsDebugPlugin::default()) // [NEW] Visualize Colliders & Joints
         .add_plugins(AiEditorPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, camera_control_system)
