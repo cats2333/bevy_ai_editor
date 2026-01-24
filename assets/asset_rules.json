@@ -1,5 +1,9 @@
 {
   "comment": "Asset Placement Rules & Correction Metadata",
+  "global_settings": {
+    "grid_size": 1.0,
+    "unit_scale": "1 unit = 1 meter (approx)"
+  },
   "rules": {
     "models/city_road/road-straight.glb": {
       "orientation": "x-axis",

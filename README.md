@@ -79,6 +79,7 @@ To help AI agents understand how to place objects correctly, we follow these con
 - **Roads**: Native models are aligned along the **X-Axis**.
   - **Horizontal Road**: Rotation `0` or `180` degrees.
   - **Vertical Road**: Rotation `90` or `270` degrees.
+- **Grid Size**: **1.0 Unit**. Assets are designed to snap to a 1x1 grid.
 - **Houses**: Front door usually faces **+Z**.
 - **Rules File**: See `assets/asset_rules.json` for specific placement rules.
 
