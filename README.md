@@ -72,6 +72,16 @@ python examples/demos/demo_01_grid.py
 python examples/demos/demo_02_forest.py
 ```
 
+## 🏗️ Asset Conventions (Rule of Thumb)
+
+To help AI agents understand how to place objects correctly, we follow these conventions (specifically for Kenney assets):
+
+- **Roads**: Native models are aligned along the **X-Axis**.
+  - **Horizontal Road**: Rotation `0` or `180` degrees.
+  - **Vertical Road**: Rotation `90` or `270` degrees.
+- **Houses**: Front door usually faces **+Z**.
+- **Rules File**: See `assets/asset_rules.json` for specific placement rules.
+
 ## 🐍 Python Client API
 
 The `BevyAiClient` (`python/bevy_ai_client.py`) is what OpenCode uses to interact with the world:
