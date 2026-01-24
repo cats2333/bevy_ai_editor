@@ -1,0 +1,17 @@
+{
+  "comment": "Asset Placement Rules & Correction Metadata",
+  "rules": {
+    "models/city_road/road-straight.glb": {
+      "orientation": "x-axis",
+      "description": "Native model is aligned along X-axis. Use 0 deg for horizontal, 90 deg for vertical."
+    },
+    "models/city_road/road-intersection.glb": {
+      "orientation": "neutral",
+      "description": "Symmetric, rotation affects connection arms."
+    },
+    "models/city_city/building-type-a.glb": {
+      "orientation": "z-forward",
+      "description": "Front door faces +Z."
+    }
+  }
+}
