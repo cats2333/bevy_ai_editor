@@ -7,7 +7,7 @@ class BevyAiClient:
         self.base_url = f"http://{host}:{port}"
         print(f"[CONN] Connected to Bevy AI Editor at {self.base_url}")
 
-    def spawn(self, asset_path, x, z, y=0.0, scale=1.0, rotation=0.0, name=None, physics="static"):
+    def spawn(self, asset_path, x, y, z, scale=1.0, rotation=0.0, name=None, physics="static"):
         """
         Spawn an entity.
         :param physics: "static" (default), "dynamic" (gravity), "kinematic" (scripted)

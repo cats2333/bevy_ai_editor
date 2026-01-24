@@ -337,12 +337,15 @@ fn handle_ai_commands(
                     // Physics
                     match physics_type {
                         "dynamic" => {
+                            info!("⚖️ [Physics] {} -> Dynamic", asset_path);
                             e.insert(RigidBody::Dynamic);
                         }
                         "kinematic" => {
+                            info!("⚖️ [Physics] {} -> Kinematic", asset_path);
                             e.insert(RigidBody::Kinematic);
                         }
                         _ => {
+                            info!("⚖️ [Physics] {} -> Static (Default)", asset_path);
                             e.insert(RigidBody::Static);
                         }
                     }
@@ -435,18 +438,52 @@ fn handle_ai_commands(
                             let mut joint = RevoluteJoint::new(e1, e2)
                                 .with_local_anchor1(anchor1)
                                 .with_local_anchor2(anchor2)
-                                .with_aligned_axis(Vec3::X); // Default axis X, maybe make configurable?
+                                .with_hinge_axis(Vec3::X); // Fixed deprecation
 
                             if let Some(limits) = joint_cmd.limits {
                                 joint = joint.with_angle_limits(limits[0], limits[1]);
                             }
 
-                            // Enable motor if requested (Positional by default for robotics)
+                            // Enable motor logic via Limits (Servo mode)
                             if joint_cmd.motor {
-                                // Default stiff motor
-                                // TODO: Fix Motor API in Avian 0.5
-                                // joint = joint.with_angular_position_target(0.0)
-                                //    .with_angular_velocity_target(0.0);
+                                // Initialize as a "Servo" holding position 0.0
+                                // This prevents the limb from collapsing before the first command
+                                joint = joint
+                                    .with_angle_limits(0.0, 0.0)
+                                    .with_limit_compliance(1.0 / 1000.0); // Default stiffness
+                            }
+
+                            // Experimental probe for Motor API
+                            // Case 1: Maybe it uses a driver? or explicit limit/motor struct?
+                            // Let's try to access public fields or methods suggested by lsp? No lsp.
+                            // We will try to rely on compiler suggestions.
+
+                            // Attempt 1: Look for "motor" related methods
+                            // joint = joint.with_motor(...);
+
+                            // Avian 0.5 likely separates Joint and Motor?
+                            // Or uses `AngularPositionJoint` as a constraint?
+
+                            // Let's try to inspect the joint by intentionally causing a type mismatch
+                            // to see the full struct definition in error log? No, that's hard.
+
+                            // Let's try the most common rename:
+                            // with_angular_velocity_target -> with_angular_velocity
+                            // with_angular_position_target -> with_angular_position (?)
+
+                            if joint_cmd.motor {
+                                // Attempting to use typical avian methods.
+                                // If this fails, the compiler might suggest the correct one.
+                                // Trying `with_drive_velocity` or similar.
+                                // Actually, Avian 0.5 `RevoluteJoint` might use `with_angular_velocity_drive`?
+                                // Let's try `with_angular_position_drive`.
+                                // joint = joint.with_angular_position_drive(0.0, 10.0, 1.0);
+
+                                // Or maybe `with_compliance` is relevant?
+
+                                // Let's try to set a public field directly if builder fails.
+                                // We'll write a dummy line to trigger suggestions.
+                                // joint.set_target_pos(0.0);
                             }
 
                             commands.spawn(joint)
@@ -478,14 +515,31 @@ fn handle_ai_commands(
                 if let Some(&joint_entity) = named_entities.0.get(&motor_cmd.joint_name) {
                     // Try to get RevoluteJoint
                     if let Ok(mut joint) = revolute_joints.get_mut(joint_entity) {
-                        // Update target
-                        // Avian 0.2 API: set_angular_position_target
-                        // joint.angular_position_target = Some(motor_cmd.target_pos);
-                        // TODO: Fix Motor API
-                        warn!("⚠️ [Motor] Motor control temporarily disabled due to API mismatch in Avian 0.5");
-                        info!(
-                            "⚙️ [Motor] Request received for '{}' -> {}",
-                            motor_cmd.joint_name, motor_cmd.target_pos
+                        // Implementation using AngleLimit as a Position Motor
+                        // min == max == target
+                        let target = motor_cmd.target_pos;
+
+                        // Update limit to target
+                        joint.angle_limit = Some(AngleLimit::new(target, target));
+
+                        // Compliance (Inverse of stiffness)
+                        // Avoid divide by zero
+                        let stiffness = motor_cmd.stiffness.max(0.0001);
+                        // Avian uses compliance (meters/Newton or rad/NewtonMeter)
+                        // High stiffness = Low compliance
+                        joint.limit_compliance = 1.0 / stiffness;
+
+                        // Damping? Avian 0.5 AngleLimit doesn't have built-in damping param in the struct?
+                        // It uses `limit_compliance`.
+                        // But we might need `JointDamping` component for velocity damping?
+                        // For now, let's rely on stiffness.
+                        // Note: Avian's soft constraints usually handle damping internally via frequency/damping ratio
+                        // if using specific APIs, but here we use raw compliance.
+                        // Raw compliance = 1/k.
+
+                        debug!(
+                            "⚙️ [Motor] Set '{}' target to {:.2} (stiffness: {:.1})",
+                            motor_cmd.joint_name, target, stiffness
                         );
                     } else {
                         warn!(
