@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ai_editor"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 description = "A remote AI level editor plugin for Bevy engine, enabling Python-based scene manipulation for AI agents."
 license = "MIT"
@@ -9,6 +9,10 @@ homepage = "https://github.com/cats2333/bevy_ai_editor"
 readme = "README.md"
 keywords = ["bevy", "gamedev", "editor", "ai", "python"]
 categories = ["game-development", "development-tools"]
+
+[package.metadata.crates-io]
+name = "bevy_ai_editor"
+image = "bevy_ai_editor.gif"
 
 [dependencies]
 bevy = { version = "0.18", default-features = true }
