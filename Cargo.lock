@@ -388,7 +388,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_ai_editor"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "avian3d",
  "bevy",
