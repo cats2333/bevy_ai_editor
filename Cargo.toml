@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ai_editor"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 description = "A remote AI level editor plugin for Bevy engine, enabling Python-based scene manipulation for AI agents."
 license = "MIT"

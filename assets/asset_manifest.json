@@ -1,4 +1,79 @@
 {
+  "models/city_city/building-type-l.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0335879,
+      1.0491934,
+      1.02
+    ],
+    "center_offset": [
+      0.0,
+      0.5245967,
+      2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-h.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.3,
+      0.73749995,
+      0.916
+    ],
+    "center_offset": [
+      0.0,
+      0.36874998,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-f.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.428,
+      1.1375,
+      1.4058912
+    ],
+    "center_offset": [
+      2.9802322e-8,
+      0.56875,
+      2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-1x3.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2750001,
+      0.26999998,
+      0.4375
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-flat.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.26999998,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
   "models/tree-small.glb": {
     "collider": "capsule",
     "size": [
@@ -14,7 +89,832 @@
     "snap_to_ground": true,
     "vertical_offset": 0.0
   },
-  "models/fence.glb": {
+  "models/city_road/construction-light.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.075,
+      0.23374999,
+      0.075
+    ],
+    "center_offset": [
+      0.0,
+      0.11687499,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-end-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-intersection-path.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-b.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.8280001,
+      1.1375,
+      1.14
+    ],
+    "center_offset": [
+      0.0,
+      0.56875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-r.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0280001,
+      1.1411428,
+      1.02
+    ],
+    "center_offset": [
+      0.0,
+      0.5705714,
+      -2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bend.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-curve-intersection-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.08,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/tile-slantHigh.glb": {
+    "collider": "trimesh",
+    "size": [
+      1.0,
+      0.52,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": false,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-1x2.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.875,
+      0.26999998,
+      0.4375
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-curved-cross.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.4,
+      0.67499995,
+      0.4
+    ],
+    "center_offset": [
+      0.0,
+      0.33749998,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-intersection.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-crossing.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/sign-highway.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.132375,
+      0.707375,
+      0.99999994
+    ],
+    "center_offset": [
+      -0.0411875,
+      0.3536875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-2x3.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2750001,
+      0.26999998,
+      0.8375
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-driveway-double-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-square.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/construction-cone.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.075,
+      0.09375,
+      0.075
+    ],
+    "center_offset": [
+      0.0,
+      0.046875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-curved.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.05,
+      0.67499995,
+      0.22500001
+    ],
+    "center_offset": [
+      0.0,
+      0.33749998,
+      -0.0875
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-square.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.05,
+      0.6,
+      0.2375
+    ],
+    "center_offset": [
+      0.0,
+      0.3,
+      -0.09374999
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bend-sidewalk.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-u.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.4280002,
+      1.1375,
+      1.086935
+    ],
+    "center_offset": [
+      -8.940697e-8,
+      0.56875,
+      2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/sign-highway-detailed.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.132375,
+      0.82212496,
+      0.99999994
+    ],
+    "center_offset": [
+      -0.0411875,
+      0.41106248,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-crossroad-path.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-k.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.920938,
+      1.1495962,
+      1.02
+    ],
+    "center_offset": [
+      1.4901161e-8,
+      0.5747981,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-2x2.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.875,
+      0.26999998,
+      0.8375
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-straight-barrier-end.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.08,
+      1.0000002
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-i.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2863803,
+      0.73749995,
+      1.028
+    ],
+    "center_offset": [
+      0.0,
+      0.36874998,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/driveway-long.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.35999998,
+      0.01,
+      0.4
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bend-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-driveway-single.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side-entry.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.31
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      -0.15499997
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.08,
+      1.3100002
+    ],
+    "center_offset": [
+      5.9604645e-8,
+      0.04,
+      -0.15499997
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/tile-high.glb": {
+    "collider": "trimesh",
+    "size": [
+      1.0,
+      0.25,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.125,
+      0.0
+    ],
+    "snap_to_ground": false,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-driveway-single-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-high-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.58,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.29,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-t.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.3135879,
+      1.1563306,
+      1.4063803
+    ],
+    "center_offset": [
+      -0.006793976,
+      0.5781653,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-split-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-straight-half.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.5,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-driveway-double.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-roundabout.glb": {
+    "collider": "cuboid",
+    "size": [
+      3.0,
+      0.02,
+      3.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.26999998,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-low.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2750001,
+      0.17,
+      0.8375
+    ],
+    "center_offset": [
+      0.0,
+      0.085,
+      -0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bend-square.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side-exit.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.31
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      -0.15499997
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-flat-high.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.52,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-flat-curve.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.52,
+      1.0
+    ],
+    "center_offset": [
+      -0.00028395653,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-3x3.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2750001,
+      0.26999998,
+      1.2375001
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-straight.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/path-long.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.2,
+      0.01,
+      0.4
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/driveway-short.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.35999998,
+      0.01,
+      0.2
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-curve.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.02,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-crossroad-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-1x4.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.6750001,
+      0.26999998,
+      0.4375
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/path-stones-messy.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.15562412,
+      0.01,
+      0.36135045
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/tile-slant.glb": {
+    "collider": "trimesh",
+    "size": [
+      1.0,
+      0.26999998,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.0
+    ],
+    "snap_to_ground": false,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence.glb": {
     "collider": "cuboid",
     "size": [
       0.47500002,
@@ -24,6 +924,771 @@
     "center_offset": [
       0.0,
       0.13499999,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/fence-3x2.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.875,
+      0.26999998,
+      1.2375001
+    ],
+    "center_offset": [
+      0.0,
+      0.13499999,
+      0.018750012
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-square-cross.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.42499998,
+      0.6,
+      0.42499998
+    ],
+    "center_offset": [
+      0.0,
+      0.3,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-intersection-line.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-end-round-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/bridge-pillar.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.1,
+      0.5,
+      0.1
+    ],
+    "center_offset": [
+      0.0,
+      0.25,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-end.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-curved-double.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.05,
+      0.67499995,
+      0.4
+    ],
+    "center_offset": [
+      0.0,
+      0.33749998,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side-exit-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.08,
+      1.3100002
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      -0.155
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/path-stones-short.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.14,
+      0.01,
+      0.2
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-curve-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.58,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.29,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/sign-highway-wide.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.132375,
+      0.707375,
+      0.99999994
+    ],
+    "center_offset": [
+      -0.0411875,
+      0.3536875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-split.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/light-square-double.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.050000004,
+      0.6,
+      0.42499998
+    ],
+    "center_offset": [
+      -1.8626451e-9,
+      0.3,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-c.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2863803,
+      1.033541,
+      1.0281378
+    ],
+    "center_offset": [
+      0.0,
+      0.5167705,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-q.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.24,
+      0.918,
+      0.88558793
+    ],
+    "center_offset": [
+      0.0,
+      0.459,
+      0.020793945
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.32999998,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.16499999,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/tile-low.glb": {
+    "collider": "trimesh",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": false,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/path-short.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.2,
+      0.01,
+      0.2
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-a.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.3,
+      0.833541,
+      1.0281378
+    ],
+    "center_offset": [
+      0.0,
+      0.4167705,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-square-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-roundabout-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      3.0,
+      0.08,
+      3.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.31
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      -0.15499997
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-d.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.7563803,
+      1.2375001,
+      1.028
+    ],
+    "center_offset": [
+      0.0,
+      0.61875004,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/path-stones-long.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.14,
+      0.01,
+      0.4
+    ],
+    "center_offset": [
+      0.0,
+      0.005,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-o.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.27,
+      1.1375,
+      1.028
+    ],
+    "center_offset": [
+      -2.9802322e-8,
+      0.56875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bend-square-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-curve-intersection.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.02,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-high.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.52,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-e.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.3,
+      1.1375,
+      1.028
+    ],
+    "center_offset": [
+      0.0,
+      0.56875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-s.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.406029,
+      1.1375,
+      1.0863805
+    ],
+    "center_offset": [
+      2.9802322e-8,
+      0.56875,
+      2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-end-round.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-side-entry-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.08,
+      1.3100002
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      -0.15500003
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-straight-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.08,
+      1.0000002
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-m.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.4280001,
+      0.73749995,
+      1.428
+    ],
+    "center_offset": [
+      0.0,
+      0.36874998,
+      -2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-intersection-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.08,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-bridge.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0000002,
+      0.52,
+      1.0000002
+    ],
+    "center_offset": [
+      0.0,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/tree-large.glb": {
+    "collider": "capsule",
+    "size": [
+      0.21044418,
+      0.76699996,
+      0.24299999
+    ],
+    "center_offset": [
+      0.0,
+      0.38349998,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-p.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.2400001,
+      0.918,
+      0.99000007
+    ],
+    "center_offset": [
+      0.0,
+      0.459,
+      2.9802322e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/bridge-pillar-wide.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.14,
+      0.5,
+      0.14
+    ],
+    "center_offset": [
+      0.0,
+      0.25,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-slant-curve.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.52,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.26,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/construction-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.105,
+      0.11874999,
+      0.225
+    ],
+    "center_offset": [
+      0.0,
+      0.059374996,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-j.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.37,
+      1.0375,
+      0.916
+    ],
+    "center_offset": [
+      0.0,
+      0.51875,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-straight-barrier-half.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.5000002,
+      0.08,
+      1.0000002
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-n.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.7842715,
+      1.1375,
+      1.3778912
+    ],
+    "center_offset": [
+      -2.9802322e-8,
+      0.56875,
+      -5.9604645e-8
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/building-type-g.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.45,
+      0.7682097,
+      1.178
+    ],
+    "center_offset": [
+      0.0,
+      0.38410485,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/tree-small.glb": {
+    "collider": "capsule",
+    "size": [
+      0.21044418,
+      0.56700003,
+      0.24299999
+    ],
+    "center_offset": [
+      0.0,
+      0.28350002,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-crossroad-line.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-crossroad.glb": {
+    "collider": "cuboid",
+    "size": [
+      1.0,
+      0.02,
+      1.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_city/planter.glb": {
+    "collider": "cuboid",
+    "size": [
+      0.4,
+      0.17710954,
+      0.3
+    ],
+    "center_offset": [
+      0.0,
+      0.08855477,
+      -0.00057337433
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-curve-barrier.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.08,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.04,
+      0.0
+    ],
+    "snap_to_ground": true,
+    "vertical_offset": 0.0
+  },
+  "models/city_road/road-curve-pavement.glb": {
+    "collider": "cuboid",
+    "size": [
+      2.0,
+      0.02,
+      2.0
+    ],
+    "center_offset": [
+      0.0,
+      0.01,
       0.0
     ],
     "snap_to_ground": true,
