@@ -15,7 +15,37 @@ fn main() {
         }))
         .add_plugins(BevyAiRemotePlugin)
         .add_systems(Startup, setup)
+        .add_systems(Update, draw_gizmos) // Draw axes every frame
         .run();
+}
+
+fn draw_gizmos(mut gizmos: Gizmos) {
+    // X-axis (Red)
+    gizmos.line(
+        Vec3::ZERO,
+        Vec3::new(10.0, 0.0, 0.0),
+        Color::srgb(1.0, 0.0, 0.0),
+    );
+    // Y-axis (Green)
+    gizmos.line(
+        Vec3::ZERO,
+        Vec3::new(0.0, 10.0, 0.0),
+        Color::srgb(0.0, 1.0, 0.0),
+    );
+    // Z-axis (Blue)
+    gizmos.line(
+        Vec3::ZERO,
+        Vec3::new(0.0, 0.0, 10.0),
+        Color::srgb(0.0, 0.0, 1.0),
+    );
+
+    // Grid (White, faint)
+    gizmos.grid(
+        Isometry3d::default(),
+        UVec2::new(20, 20),
+        Vec2::new(1.0, 1.0),
+        Color::srgba(1.0, 1.0, 1.0, 0.1),
+    );
 }
 
 fn setup(
