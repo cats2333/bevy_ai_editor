@@ -1,12 +1,14 @@
 use bevy::prelude::*;
 use bevy_ai_remote::BevyAiRemotePlugin;
 
+use bevy::window::WindowResolution;
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Simple Game (AI Host)".to_string(),
-                resolution: (800.0, 600.0).into(),
+                resolution: WindowResolution::new(800.0, 600.0),
                 ..default()
             }),
             ..default()
