@@ -466,6 +466,11 @@ impl Tool for BevyClearSceneTool {
                     // And maybe exclude Camera/Light?
                     // Let's just nuke it. It's a "Clear Scene" button.
 
+                    println!(
+                        "[BevyTool] Despawning entity: {} (Has Transform: {})",
+                        entity_id, has_transform
+                    );
+
                     let despawn_payload = json!({
                         "jsonrpc": "2.0",
                         "method": "bevy/despawn",
