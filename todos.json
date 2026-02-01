@@ -1,19 +1,73 @@
 [
   {
-    "id": "1",
-    "content": "Understand the user's request for GLB generation.",
-    "status": "completed",
+    "id": "place_crossing",
+    "content": "Place `road-crossing.glb` at (2,0,2).",
+    "status": "pending",
     "priority": "high"
   },
   {
-    "id": "2",
-    "content": "Based on user input, generate the specified GLB file.",
-    "status": "in_progress",
-    "priority": "high"
+    "id": "place_tee_south",
+    "content": "Place `road-tee.glb` at (2,0,0) with rotation for stem South (+Z).",
+    "status": "pending",
+    "priority": "medium"
   },
   {
-    "id": "3",
-    "content": "Place the generated GLB file in the correct assets directory.",
+    "id": "place_tee_north",
+    "content": "Place `road-tee.glb` at (2,0,4) with rotation for stem North (-Z).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_tee_east",
+    "content": "Place `road-tee.glb` at (0,0,2) with rotation for stem East (+X).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_tee_west",
+    "content": "Place `road-tee.glb` at (4,0,2) with rotation for stem West (-X).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_bend_00",
+    "content": "Place `road-bend.glb` at (0,0,0) with rotation to connect East (+X) and South (+Z). (Rotation: [0, 270, 0])",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_bend_04",
+    "content": "Place `road-bend.glb` at (0,0,4) with rotation to connect East (+X) and North (-Z). (Rotation: [0, 0, 0])",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_bend_40",
+    "content": "Place `road-bend.glb` at (4,0,0) with rotation to connect West (-X) and South (+Z). (Rotation: [0, 180, 0])",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_bend_44",
+    "content": "Place `road-bend.glb` at (4,0,4) with rotation to connect West (-X) and North (-Z). (Rotation: [0, 90, 0])",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "place_straight_h",
+    "content": "Place horizontal `road-straight.glb` segments.",
+    "status": "pending",
+    "priority": "low"
+  },
+  {
+    "id": "place_straight_v",
+    "content": "Place vertical `road-straight.glb` segments.",
+    "status": "pending",
+    "priority": "low"
+  },
+  {
+    "id": "execute_batch",
+    "content": "Execute all `bevy_upload_asset` calls.",
     "status": "pending",
     "priority": "high"
   }

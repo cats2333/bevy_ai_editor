@@ -17,6 +17,7 @@ mod ui;
 // mod simulation; // Removed
 
 use crate::llm::{GeminiClient, Message, MessageContent, ContentPart, ImageUrl, StreamEvent, ToolCall, FunctionCall};
+use crate::tools::Tool; // Import Tool trait only
 use crate::agent::{AgentProfile, get_default_agents};
 use crate::types::{AsyncMessage, ChannelState};
 use futures_util::StreamExt;
@@ -686,9 +687,16 @@ impl eframe::App for AxiomApp {
                     self.preview_texture = None;
                 }
                 input::InputAction::ClearScene => {
-                    // Send a command to the AI to clear the scene
-                    self.input_text = "Clear the entire scene.".to_string();
-                    self.send_message(true); // Force send
+                    // Directly execute the Clear Scene tool without involving the LLM
+                    let tool = crate::tools::bevy::BevyClearSceneTool;
+                    let result = match tool.execute(serde_json::Value::Null) {
+                        Ok(msg) => format!("✅ Scene Cleared: {}", msg),
+                        Err(e) => format!("❌ Failed to Clear Scene: {}", e),
+                    };
+                    
+                    if let Some(channel) = self.channels.get_mut(&self.active_channel_id) {
+                        channel.history.push(("System".to_string(), MessageContent::Text(result)));
+                    }
                 }
                 input::InputAction::None => {}
             }
