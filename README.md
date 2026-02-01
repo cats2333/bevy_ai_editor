@@ -5,13 +5,13 @@ It allows you to build game levels, spawn assets, and manipulate the scene using
 
 ## 🚀 Key Features
 
-*   **🤖 AI Architect**: Instruct the AI to "Build a 5x5 road grid" or "Place a forest here", and watch it happen instantly.
-*   **🌉 Real-time Bridge**: Connects to your running Bevy game via **BRP (Bevy Remote Protocol)** over HTTP.
-*   **📦 Hot Asset Upload**: Upload `.glb` models and textures from the editor to the game runtime on the fly. No restart needed.
-*   **🧠 Intelligent Tooling**: 
+*   **AI Architect**: Instruct the AI to "Build a 5x5 road grid" or "Place a forest here", and watch it happen instantly.
+*   **Real-time Bridge**: Connects to your running Bevy game via **BRP (Bevy Remote Protocol)** over HTTP.
+*   **Hot Asset Upload**: Upload `.glb` models and textures from the editor to the game runtime on the fly. No restart needed.
+*   **Intelligent Tooling**: 
     *   **Road Engineer**: Specialized logic for procedural road generation (handling orientation, T-junctions, and bends automatically).
     *   **Scene Management**: Clear scene, inspect entities, and manage hierarchy.
-*   **⚡ Modern UI**: Built with `egui`, featuring a file tree, chat interface, and minimal toolbars.
+*   **Modern UI**: Built with `egui`, featuring a file tree, chat interface, and minimal toolbars.
 
 ## 🛠️ Architecture
 
