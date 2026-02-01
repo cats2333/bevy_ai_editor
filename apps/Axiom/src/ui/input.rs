@@ -6,7 +6,6 @@ pub enum InputAction {
     StopLoading,
     RequestScreenshot,
     ClearPendingImage,
-    ClearScene, // New Action
     None,
 }
 
@@ -54,14 +53,6 @@ pub fn render_input_panel(
         ui.horizontal(|ui| {
             if ui.button("➕").clicked() {
                 action = InputAction::RequestScreenshot;
-            }
-            // Add Clear Scene Button
-            if ui
-                .button(egui::RichText::new("🧹").color(egui::Color32::YELLOW))
-                .on_hover_text("Clear Scene")
-                .clicked()
-            {
-                action = InputAction::ClearScene;
             }
 
             // We capture focus lost + enter key for send

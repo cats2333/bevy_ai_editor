@@ -3,7 +3,8 @@ use eframe::egui;
 pub enum TopPanelAction {
     SwitchChannel(String),
     ClearChat,
-    CopyLog, // New Action
+    ClearScene, // New Action
+    CopyLog,
     None,
 }
 
@@ -108,6 +109,12 @@ pub fn render_top_panel(ui: &mut egui::Ui, active_channel_id: &str) -> TopPanelA
         ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
             if ui.button("🗑️ Clear Chat").clicked() {
                 action = TopPanelAction::ClearChat;
+            }
+
+            ui.add_space(5.0);
+
+            if ui.button("🗑️ Clear Scene").clicked() {
+                action = TopPanelAction::ClearScene;
             }
 
             ui.add_space(5.0);
