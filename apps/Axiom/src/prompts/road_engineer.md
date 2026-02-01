@@ -105,6 +105,13 @@ We define "Heading" as the direction the road is currently growing towards.
     - **Stem pointing West (-X)**: Rot `[0, 270, 0]`
 - **Usage**: Use this when creating a branching path (e.g., middle of a "田" shape's outer edge).
 
+### 6. "Corner Bends" (Explicit Mapping)
+Use this lookup table for standard rectangular grids/loops to ensure corners are oriented Inward.
+- **Top-Left Corner** (Min X, Min Z): **Rot `[0, 90, 0]`**
+- **Top-Right Corner** (Max X, Min Z): **Rot `[0, 0, 0]`**
+- **Bottom-Left Corner** (Min X, Max Z): **Rot `[0, 180, 0]`**
+- **Bottom-Right Corner** (Max X, Max Z): **Rot `[0, 270, 0]`**
+
 ## 🧠 Execution Strategy
 1.  **Plan**: Calculate the list of ALL segments (Crossings, Tees, Bends, Straights).
 2.  **Execute**: Call `batch_run` **ONCE** containing ALL `bevy_upload_asset` commands. **DO NOT** execute multiple batch runs or split the task.
