@@ -10,7 +10,10 @@ pub mod todo;
 
 use crate::types::AsyncMessage;
 use anyhow::{anyhow, Result};
-use bevy::{BevyRpcTool, BevySpawnPrimitiveTool, BevySpawnSceneTool, BevyUploadAssetTool};
+use bevy::{
+    BevyClearSceneTool, BevyRpcTool, BevySpawnPrimitiveTool, BevySpawnSceneTool,
+    BevyUploadAssetTool,
+};
 use serde_json::{json, Value};
 use std::fs;
 use std::sync::mpsc::Sender;
@@ -165,6 +168,7 @@ pub fn get_tools_for_profile(profile_name: &str, tx: Sender<AsyncMessage>) -> Ve
         Box::new(lsp::LspTool),
         Box::new(shell::ShellTool),
         Box::new(bevy::BevyUploadAssetTool), // Now available to all agents
+        Box::new(bevy::BevyClearSceneTool),  // New: Clear Scene
                                              // Box::new(bevy::BevySpawnPrimitiveTool), // Temporarily disabled to force asset upload workflow
     ];
 

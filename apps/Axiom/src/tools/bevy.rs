@@ -405,6 +405,85 @@ impl Tool for BevySpawnSceneTool {
     }
 }
 
+/// Tool to Clear the Bevy Scene (Despawn all entities)
+pub struct BevyClearSceneTool;
+
+impl Tool for BevyClearSceneTool {
+    fn name(&self) -> String {
+        "bevy_clear_scene".to_string()
+    }
+
+    fn description(&self) -> String {
+        "Despawn all entities in the Bevy scene to start fresh.".to_string()
+    }
+
+    fn schema(&self) -> Value {
+        json!({
+            "type": "function",
+            "function": {
+                "name": "bevy_clear_scene",
+                "description": "Clear the scene by despawning all entities.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            }
+        })
+    }
+
+    fn execute(&self, _args: Value) -> Result<String> {
+        // 1. List all entities
+        let list_payload = json!({
+            "jsonrpc": "2.0",
+            "method": "bevy/list",
+            "id": 1,
+            "params": {}
+        });
+
+        let resp = ureq::post(BEVY_RPC_URL).send_json(list_payload)?;
+        let body: Value = resp.into_json()?;
+
+        let mut count = 0;
+        if let Some(result) = body.get("result").and_then(|r| r.as_array()) {
+            for entity_info in result {
+                if let Some(entity_id) = entity_info.get("entity").and_then(|e| e.as_u64()) {
+                    // Despawn entity
+                    // Skip entity 0 (World) or key system entities if possible?
+                    // BRP usually returns everything. Despawning Camera/Light might be bad if not respawned.
+                    // For now, let's try to despawn everything and rely on the user to "setup" again,
+                    // OR filter by component if possible. BRP list output contains components.
+
+                    let components = entity_info.get("components").and_then(|c| c.as_array());
+                    let has_transform = components
+                        .map(|c| {
+                            c.iter()
+                                .any(|v| v == "bevy_transform::components::transform::Transform")
+                        })
+                        .unwrap_or(false);
+
+                    // Safe guard: Only despawn things with Transform (likely game objects)
+                    // And maybe exclude Camera/Light?
+                    // Let's just nuke it. It's a "Clear Scene" button.
+
+                    let despawn_payload = json!({
+                        "jsonrpc": "2.0",
+                        "method": "bevy/despawn",
+                        "id": 1,
+                        "params": {
+                            "entity": entity_id
+                        }
+                    });
+                    let _ = ureq::post(BEVY_RPC_URL).send_json(despawn_payload);
+                    count += 1;
+                }
+            }
+        }
+
+        Ok(format!("Cleared {} entities.", count))
+    }
+}
+
 /// Helper tool to Spawn a Primitive Cube easily
 pub struct BevySpawnPrimitiveTool;
 

@@ -54,6 +54,22 @@ We define "Heading" as the direction the road is currently growing towards.
 - **Update Heading**: -90 degrees.
 - **Next Cursor**: Move `1.0` unit in the **NEW** Heading direction.
 
+### 4. "Intersection" (4-Way Cross)
+- **Action**: Place `road-crossing.glb`.
+- **Rotation**: Always `[0, 0, 0]` (Omni-directional).
+- **Update Heading**: No change (Continue Straight) OR Update to +90/-90 if turning.
+- **Next Cursor**: Move `1.0` unit in the Target Heading direction.
+
+### 5. "T-Junction" (3-Way Split)
+- **Action**: Place `road-tee.glb`.
+- **Assumption**: At Rot `[0, 0, 0]`, the **Stem points North (-Z)** and the **Bar runs East-West (X)**.
+- **Rotation Table**:
+    - **Stem pointing North (-Z)**: Rot `[0, 0, 0]`
+    - **Stem pointing East (+X)**: Rot `[0, 270, 0]`
+    - **Stem pointing South (+Z)**: Rot `[0, 180, 0]`
+    - **Stem pointing West (-X)**: Rot `[0, 90, 0]`
+- **Usage**: Use this when creating a branching path (e.g., middle of a "田" shape's outer edge).
+
 ## 🧠 Execution Strategy
 1.  **Plan**: Calculate the list of segments (Model, Position, Rotation) internally.
 2.  **Execute**: Call `bevy_upload_asset` for **EACH** segment.
