@@ -637,18 +637,18 @@ impl eframe::App for AxiomApp {
                         channel.history.clear();
                     }
                 }
-                top_panel::TopPanelAction::ClearScene => {
-                    // Directly execute the Clear Scene tool without involving the LLM
-                    let tool = crate::tools::bevy::BevyClearSceneTool;
-                    let result = match tool.execute(serde_json::Value::Null) {
-                        Ok(msg) => format!("✅ Scene Cleared: {}", msg),
-                        Err(e) => format!("❌ Failed to Clear Scene: {}", e),
-                    };
-                    
-                    if let Some(channel) = self.channels.get_mut(&self.active_channel_id) {
-                        channel.history.push(("System".to_string(), MessageContent::Text(result)));
-                    }
-                }
+                // top_panel::TopPanelAction::ClearScene => {
+                //     // Directly execute the Clear Scene tool without involving the LLM
+                //     let tool = crate::tools::bevy::BevyClearSceneTool;
+                //     let result = match tool.execute(serde_json::Value::Null) {
+                //         Ok(msg) => format!("✅ Scene Cleared: {}", msg),
+                //         Err(e) => format!("❌ Failed to Clear Scene: {}", e),
+                //     };
+                //     
+                //     if let Some(channel) = self.channels.get_mut(&self.active_channel_id) {
+                //         channel.history.push(("System".to_string(), MessageContent::Text(result)));
+                //     }
+                // }
                 top_panel::TopPanelAction::CopyLog => {
                     let mut log_text = String::new();
                     if let Some(channel) = self.channels.get(&self.active_channel_id) {

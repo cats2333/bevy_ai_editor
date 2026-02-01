@@ -57,14 +57,7 @@ pub fn render_input_panel(
 
             // We capture focus lost + enter key for send
             let text_edit = ui.add(
-                egui::TextEdit::singleline(input_text).desired_width(ui.available_width() - 100.0),
-            );
-
-            // Show current role indicator (Read-Only)
-            ui.label(
-                egui::RichText::new(format!("🎭 Identity: {}", current_profile.name))
-                    .small()
-                    .weak(),
+                egui::TextEdit::singleline(input_text).desired_width(ui.available_width() - 80.0),
             );
 
             if is_loading {
@@ -86,6 +79,13 @@ pub fn render_input_panel(
                 }
             }
         });
+
+        // Identity label moved to bottom
+        ui.label(
+            egui::RichText::new(format!("🎭 Identity: {}", current_profile.name))
+                .small()
+                .weak(),
+        );
     });
 
     // Add some spacing at the bottom to lift it up

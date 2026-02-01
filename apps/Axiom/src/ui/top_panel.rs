@@ -3,7 +3,7 @@ use eframe::egui;
 pub enum TopPanelAction {
     SwitchChannel(String),
     ClearChat,
-    ClearScene, // New Action
+    // ClearScene, // Hidden per user request
     CopyLog,
     None,
 }
@@ -18,6 +18,7 @@ pub fn render_top_panel(ui: &mut egui::Ui, active_channel_id: &str) -> TopPanelA
 
             // --- Channel Selector (Tabs Style) ---
             // Global
+            /*
             let global_btn = ui.add(
                 egui::Button::new(
                     egui::RichText::new("🌐 Global")
@@ -38,6 +39,7 @@ pub fn render_top_panel(ui: &mut egui::Ui, active_channel_id: &str) -> TopPanelA
             if global_btn.clicked() {
                 action = TopPanelAction::SwitchChannel("global".to_string());
             }
+            */
 
             // Backend
             let backend_btn = ui.add(
@@ -113,11 +115,11 @@ pub fn render_top_panel(ui: &mut egui::Ui, active_channel_id: &str) -> TopPanelA
 
             ui.add_space(5.0);
 
-            if ui.button("🗑️ Clear Scene").clicked() {
-                action = TopPanelAction::ClearScene;
-            }
+            // if ui.button("🗑️ Clear Scene").clicked() {
+            //     action = TopPanelAction::ClearScene;
+            // }
 
-            ui.add_space(5.0);
+            // ui.add_space(5.0);
 
             if ui.button("📋 Copy Log").clicked() {
                 action = TopPanelAction::CopyLog;
