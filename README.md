@@ -10,7 +10,6 @@ It allows you to build game levels, spawn assets, and manipulate the scene using
 *   **Hot Asset Upload**: Upload `.glb` models and textures from the editor to the game runtime on the fly. No restart needed.
 *   **Intelligent Tooling**: 
     *   **Road Engineer**: Specialized logic for procedural road generation (handling orientation, T-junctions, and bends automatically).
-    *   **Scene Management**: Clear scene, inspect entities, and manage hierarchy.
 *   **Modern UI**: Built with `egui`, featuring a file tree, chat interface, and minimal toolbars.
 
 ## 🛠️ Architecture
