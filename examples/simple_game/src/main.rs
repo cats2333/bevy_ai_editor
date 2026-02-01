@@ -3,7 +3,14 @@ use bevy_ai_remote::BevyAiRemotePlugin;
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            primary_window: Some(Window {
+                title: "Simple Game (AI Host)".to_string(),
+                resolution: (800.0, 600.0).into(),
+                ..default()
+            }),
+            ..default()
+        }))
         .add_plugins(BevyAiRemotePlugin)
         .add_systems(Startup, setup)
         .run();
