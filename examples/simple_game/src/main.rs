@@ -8,7 +8,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Simple Game (AI Host)".to_string(),
-                resolution: WindowResolution::new(800.0, 600.0),
+                resolution: WindowResolution::new(800, 600),
                 ..default()
             }),
             ..default()
