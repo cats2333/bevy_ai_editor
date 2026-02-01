@@ -263,8 +263,11 @@ impl AxiomApp {
         system_prompt.push_str(&format!("\n\nCurrent Working Directory: {}\nIMPORTANT: All file operations (read/write/run) should be relative to this directory unless absolute path is specified.", cwd));
         system_prompt.push_str("\n\n**BEVY ASSET RULE**: When generating assets (images, models, etc.) for Bevy, you MUST write them to the `assets/` subdirectory within the working directory. When spawning these assets via `bevy_spawn_scene` or `bevy_spawn`, use the path RELATIVE to the `assets/` folder (e.g., if you wrote 'assets/models/cube.glb', the spawn path is 'models/cube.glb').");
         system_prompt.push_str("\n\n**CRITICAL: BINARY ASSET HANDLING**\nIf the user asks to spawn or use a specific local file (like a .glb, .png, etc.) that is provided in the Context (marked as [BINARY ASSET AVAILABLE]), you **MUST NOT** use `bevy_spawn_primitive` or `bevy_spawn_scene`. \n\nINSTEAD, you **MUST** use the `bevy_upload_asset` tool.\n- `local_path`: Use the absolute path provided in the context (usually in `apps/axiom/resources/...`).\n- `translation`: Use the user's requested position.\n\nExample: User says 'spawn this glb', and context shows `D:/.../dragon.glb`. Call `bevy_upload_asset(local_path='D:/.../dragon.glb', translation=[0,0,0])`. Do NOT try to read the file content or simulate it.");
-
-
+        
+        // Inject Road Engineering Rules
+        system_prompt.push_str("\n\n");
+        system_prompt.push_str(include_str!("prompts/road_engineer.md"));
+        
         let mut messages: Vec<Message> = Vec::new();
         
         if !system_prompt.is_empty() {
