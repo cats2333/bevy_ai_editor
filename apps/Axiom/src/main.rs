@@ -99,6 +99,7 @@ impl AxiomApp {
             history: Vec::new(),
             assigned_agents: vec!["General Assistant".to_string()],
         });
+        /*
         channels.insert("backend".to_string(), ChannelState {
             id: "backend".to_string(),
             name: "🦀 Backend".to_string(),
@@ -123,6 +124,7 @@ impl AxiomApp {
             history: Vec::new(),
             assigned_agents: vec!["Conductor".to_string()],
         });
+        */
 
         Self {
             api_key,
@@ -576,6 +578,7 @@ impl eframe::App for AxiomApp {
                 }
             });
 
+        /*
         egui::SidePanel::right("right_panel")
             .min_width(150.0)
             .default_width(200.0)
@@ -613,6 +616,7 @@ impl eframe::App for AxiomApp {
                     sidebar::SidebarAction::None => {}
                 }
             });
+        */
 
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             let action = top_panel::render_top_panel(
