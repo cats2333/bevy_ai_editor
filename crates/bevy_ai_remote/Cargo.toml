@@ -2,8 +2,12 @@
 name = "bevy_ai_remote"
 version = "0.1.0"
 edition = "2021"
-description = "Bevy plugin to enable AI-controlled editing via Axiom"
+description = "Bevy plugin to enable AI-controlled editing via Axiom Editor"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/cats2333/bevy_ai_editor"
+keywords = ["bevy", "ai", "editor", "gamedev", "remote"]
+categories = ["development-tools", "game-development"]
+readme = "README.md"
 
 [dependencies]
 bevy = { version = "0.18", default-features = false, features = ["bevy_log", "bevy_pbr", "bevy_render", "bevy_asset", "bevy_core_pipeline", "bevy_scene"] }
