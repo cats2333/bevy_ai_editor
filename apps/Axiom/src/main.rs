@@ -91,8 +91,8 @@ impl AxiomApp {
         // Initialize dotenv
         dotenv::dotenv().ok();
         
-        let api_key = std::env::var("GEMINI_API_KEY")
-            .unwrap_or_else(|_| "sk-4a1a669dd42845c2b9c241207080b13a".to_string());
+        // Remove hardcoded key fallback to prevent leakage
+        let api_key = std::env::var("GEMINI_API_KEY").unwrap_or_default();
 
         let clipboard = arboard::Clipboard::new().ok();
 
