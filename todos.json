@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "content": "Understand the user's request for GLB generation.",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "2",
+    "content": "Based on user input, generate the specified GLB file.",
+    "status": "in_progress",
+    "priority": "high"
+  },
+  {
+    "id": "3",
+    "content": "Place the generated GLB file in the correct assets directory.",
+    "status": "pending",
+    "priority": "high"
+  }
+]

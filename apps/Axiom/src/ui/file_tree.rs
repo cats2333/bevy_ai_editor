@@ -16,26 +16,25 @@ pub struct FileTreeState {
 
 impl Default for FileTreeState {
     fn default() -> Self {
-        // Try to start at apps/axiom/assets/models, fallback to CWD
+        // Start at current working directory (project root)
         let cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
-        let default_path = cwd.join("assets").join("models");
 
-        // Ensure it exists just in case
-        if !default_path.exists() {
-            let _ = std::fs::create_dir_all(&default_path);
+        let mut expanded = HashSet::new();
+        // Auto-expand "assets" and "assets/models" if they exist
+        let assets_path = cwd.join("assets");
+        if assets_path.exists() {
+            expanded.insert(assets_path.clone());
+            let models_path = assets_path.join("models");
+            if models_path.exists() {
+                expanded.insert(models_path);
+            }
         }
 
-        let root = if default_path.exists() {
-            default_path
-        } else {
-            cwd.clone()
-        };
-
         Self {
-            root_path: root.clone(),
-            input_path: root.to_string_lossy().to_string(), // Keep input as CWD for context, or maybe root? Let's use root.
+            root_path: cwd.clone(),
+            input_path: cwd.to_string_lossy().to_string(),
             selected_files: HashSet::new(),
-            expanded_paths: HashSet::new(),
+            expanded_paths: expanded,
             selection_modes: std::collections::HashMap::new(),
         }
     }
@@ -59,7 +58,7 @@ pub fn render_file_tree(ui: &mut egui::Ui, state: &mut FileTreeState) {
             if new_path.exists() && new_path.is_dir() {
                 state.root_path = new_path;
                 state.selected_files.clear(); // Clear selections on root change
-                state.expanded_paths.clear();
+                                              // state.expanded_paths.clear(); // UX Improvement: Don't clear expansions on root refresh
             }
         }
 
