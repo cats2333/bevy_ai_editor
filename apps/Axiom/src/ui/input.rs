@@ -57,7 +57,7 @@ pub fn render_input_panel(
 
             // We capture focus lost + enter key for send
             let text_edit = ui.add(
-                egui::TextEdit::singleline(input_text).desired_width(ui.available_width() - 50.0),
+                egui::TextEdit::singleline(input_text).desired_width(ui.available_width() - 100.0),
             );
 
             // Show current role indicator (Read-Only)

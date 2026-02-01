@@ -1,74 +1,128 @@
 [
   {
-    "id": "place_crossing",
-    "content": "Place `road-crossing.glb` at (2,0,2).",
+    "id": "1",
+    "content": "Place the central crossroad at (2,2).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "2",
+    "content": "Place the T-junction at (2,0) (Stem South).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "3",
+    "content": "Place the T-junction at (0,2) (Stem East).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "4",
+    "content": "Place the T-junction at (4,2) (Stem West).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "5",
+    "content": "Place the T-junction at (2,4) (Stem North).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "6",
+    "content": "Place the bend at (0,0) (South to East).",
+    "status": "completed",
+    "priority": "high"
+  },
+  {
+    "id": "7",
+    "content": "Place the bend at (4,0) (West to North).",
     "status": "pending",
     "priority": "high"
   },
   {
-    "id": "place_tee_south",
-    "content": "Place `road-tee.glb` at (2,0,0) with rotation for stem South (+Z).",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_tee_north",
-    "content": "Place `road-tee.glb` at (2,0,4) with rotation for stem North (-Z).",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_tee_east",
-    "content": "Place `road-tee.glb` at (0,0,2) with rotation for stem East (+X).",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_tee_west",
-    "content": "Place `road-tee.glb` at (4,0,2) with rotation for stem West (-X).",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_bend_00",
-    "content": "Place `road-bend.glb` at (0,0,0) with rotation to connect East (+X) and South (+Z). (Rotation: [0, 270, 0])",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_bend_04",
-    "content": "Place `road-bend.glb` at (0,0,4) with rotation to connect East (+X) and North (-Z). (Rotation: [0, 0, 0])",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_bend_40",
-    "content": "Place `road-bend.glb` at (4,0,0) with rotation to connect West (-X) and South (+Z). (Rotation: [0, 180, 0])",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_bend_44",
-    "content": "Place `road-bend.glb` at (4,0,4) with rotation to connect West (-X) and North (-Z). (Rotation: [0, 90, 0])",
-    "status": "pending",
-    "priority": "medium"
-  },
-  {
-    "id": "place_straight_h",
-    "content": "Place horizontal `road-straight.glb` segments.",
-    "status": "pending",
-    "priority": "low"
-  },
-  {
-    "id": "place_straight_v",
-    "content": "Place vertical `road-straight.glb` segments.",
-    "status": "pending",
-    "priority": "low"
-  },
-  {
-    "id": "execute_batch",
-    "content": "Execute all `bevy_upload_asset` calls.",
+    "id": "8",
+    "content": "Place the bend at (0,4) (North to East).",
     "status": "pending",
     "priority": "high"
+  },
+  {
+    "id": "9",
+    "content": "Place the bend at (4,4) (West to South).",
+    "status": "pending",
+    "priority": "high"
+  },
+  {
+    "id": "10",
+    "content": "Place horizontal straight road at (1,0).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "11",
+    "content": "Place horizontal straight road at (3,0).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "12",
+    "content": "Place horizontal straight road at (1,2).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "13",
+    "content": "Place horizontal straight road at (3,2).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "14",
+    "content": "Place horizontal straight road at (1,4).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "15",
+    "content": "Place horizontal straight road at (3,4).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "16",
+    "content": "Place vertical straight road at (0,1).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "17",
+    "content": "Place vertical straight road at (0,3).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "18",
+    "content": "Place vertical straight road at (2,1).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "19",
+    "content": "Place vertical straight road at (2,3).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "20",
+    "content": "Place vertical straight road at (4,1).",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "21",
+    "content": "Place vertical straight road at (4,3).",
+    "status": "pending",
+    "priority": "medium"
   }
 ]

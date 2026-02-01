@@ -1,8 +1,10 @@
 use crate::tools::Tool;
 use crate::types::AsyncMessage;
 use anyhow::{anyhow, Result};
+use rayon::prelude::*;
 use serde_json::{json, Value};
 use std::sync::mpsc::Sender;
+use std::sync::{Arc, Mutex};
 
 pub struct BatchTool {
     tx: Sender<AsyncMessage>,
@@ -58,77 +60,60 @@ impl Tool for BatchTool {
             .ok_or_else(|| anyhow!("Missing or invalid 'tools' argument"))?;
 
         // Get registry of all tools, passing the channel
-        // Note: Re-creating registry might be slightly inefficient but safe
         let tx = self.tx.clone();
 
-        // We will execute them sequentially in the loop, BUT:
-        // For 'task' tool specifically, it spawns a NEW thread immediately and returns.
-        // So effectively, if we batch_run multiple 'task' calls, they WILL run in parallel.
-        // The issue might be that the loop itself takes a split second, or the UI update lag.
+        // Wrap tools in Arc for sharing across threads
+        let available_tools = Arc::new(crate::tools::get_all_tools(tx.clone()));
 
-        let mut results = Vec::new();
-        let available_tools = crate::tools::get_all_tools(tx.clone());
+        // Use Arc<Mutex<Vec<_>>> to collect results thread-safely
+        let results = Arc::new(Mutex::new(Vec::new()));
 
-        for (i, tool_call) in tools_list.iter().enumerate() {
-            let tool_name = tool_call
-                .get("tool")
-                .and_then(|v| v.as_str())
-                .ok_or_else(|| anyhow!("Item #{}: Missing 'tool' name", i))?;
+        // Use Rayon for parallel iteration
+        // Explicitly type the closure arguments to help type inference
+        tools_list
+            .par_iter()
+            .enumerate()
+            .for_each(|(i, tool_call): (usize, &Value)| {
+                let tool_name = tool_call
+                    .get("tool")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("unknown");
 
-            let params = tool_call
-                .get("parameters")
-                .cloned()
-                .ok_or_else(|| anyhow!("Item #{}: Missing 'parameters'", i))?;
+                let params = tool_call.get("parameters").cloned().unwrap_or(json!({}));
 
-            // Find the tool
-            let tool = available_tools.iter().find(|t| t.name() == tool_name);
-
-            if let Some(tool) = tool {
-                match tool.execute(params) {
-                    Ok(output) => {
-                        // For 'task' tool, 'output' is just the summary AFTER completion?
-                        // Wait, looking at task.rs:
-                        // handle.join() blocks!
-
-                        // AH HA! That's why it's sequential.
-                        // The 'task' tool implementation currently blocks the calling thread until the sub-agent finishes.
-                        // We need to fix 'task' tool to be async/non-blocking if we want true parallel batching.
-                        // OR, we change batch tool to spawn threads for each tool execution.
-
-                        // But wait, 'task' tool spawns a thread:
-                        // let handle = thread::spawn(...)
-                        // match handle.join() ... -> BLOCKS!
-
-                        // We cannot fix this easily in 'batch' without changing 'Tool' trait to be async or changing 'task' to return immediately.
-                        // However, 'task' needs to return a summary to the LLM.
-
-                        // If we want PARALLEL execution visible in UI, we should probably modify 'batch'
-                        // to spawn a thread for each tool execution if it's a 'task' tool.
-                        // But 'Tool::execute' returns Result<String>.
-
-                        results.push(json!({
-                            "tool": tool_name,
-                            "status": "success",
-                            "output": output
-                        }));
-                    }
-                    Err(e) => {
-                        results.push(json!({
+                let result_entry =
+                    if let Some(tool) = available_tools.iter().find(|t| t.name() == tool_name) {
+                        match tool.execute(params) {
+                            Ok(output) => json!({
+                                "tool": tool_name,
+                                "status": "success",
+                                "output": output
+                            }),
+                            Err(e) => json!({
+                                "tool": tool_name,
+                                "status": "error",
+                                "error": e.to_string()
+                            }),
+                        }
+                    } else {
+                        json!({
                             "tool": tool_name,
                             "status": "error",
-                            "error": e.to_string()
-                        }));
-                    }
-                }
-            } else {
-                results.push(json!({
-                    "tool": tool_name,
-                    "status": "error",
-                    "error": format!("Tool '{}' not found", tool_name)
-                }));
-            }
-        }
+                            "error": format!("Tool '{}' not found", tool_name)
+                        })
+                    };
 
-        Ok(serde_json::to_string_pretty(&results)?)
+                // Lock and push result
+                if let Ok(mut guard) = results.lock() {
+                    guard.push(result_entry);
+                }
+            });
+
+        // Extract results
+        let final_results = results
+            .lock()
+            .map_err(|_| anyhow!("Failed to lock results"))?
+            .clone();
+        Ok(serde_json::to_string_pretty(&final_results)?)
     }
 }
