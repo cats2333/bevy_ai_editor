@@ -1,31 +1,37 @@
 [
   {
-    "id": "1",
-    "content": "Place the central crossroad at `[2, 0, 2]`.",
-    "status": "pending",
+    "id": "roundabout",
+    "content": "Place roundabout (4x4) at y=0, centered roughly at [5,0,5]",
+    "status": "completed",
     "priority": "high"
   },
   {
-    "id": "2",
-    "content": "Place the four T-junctions at the midpoints of the outer edges.",
-    "status": "pending",
-    "priority": "high"
+    "id": "ground_connections",
+    "content": "Place ground-level roads connecting to and extending from roundabout",
+    "status": "completed",
+    "priority": "medium"
   },
   {
-    "id": "3",
-    "content": "Place the four corner bend roads.",
+    "id": "elevated_road_1",
+    "content": "Place Elevated Road 1 (S-curve overpass) at y=1, starting East, looping North/West/South, and descending West/South of the roundabout.",
     "status": "pending",
-    "priority": "high"
+    "priority": "medium"
   },
   {
-    "id": "4",
-    "content": "Place all straight road segments to connect these main nodes.",
+    "id": "additional_ground_roads",
+    "content": "Place additional ground-level roads and intersections as seen in the image.",
     "status": "pending",
-    "priority": "high"
+    "priority": "medium"
   },
   {
-    "id": "5",
-    "content": "Execute all `bevy_upload_asset` commands in a single `batch_run`.",
+    "id": "elevated_descent_connection",
+    "content": "Connect the elevated road descent to ground level.",
+    "status": "pending",
+    "priority": "medium"
+  },
+  {
+    "id": "verify_placements",
+    "content": "Verify all placements and rotations against the image.",
     "status": "pending",
     "priority": "high"
   }
