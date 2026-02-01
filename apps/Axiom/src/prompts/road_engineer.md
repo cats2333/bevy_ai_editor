@@ -41,12 +41,22 @@ We define "Heading" as the direction the road is currently growing towards.
 
 ### 2. "Turn Right" (Clockwise 90°)
 - **Action**: Place `road-bend.glb`.
-- **Rotation Table (Calibrated)**:
-    - Heading **East (+X)** -> Turn South (+Z): **Rot `[0, 90, 0]`**
+- **Rotation Table (Re-Calibrated)**:
+    - Heading **East (+X)** -> Turn South (+Z): **Rot `[0, 270, 0]`**
     - Heading **South (+Z)** -> Turn West (-X): **Rot `[0, 0, 0]`**
-    - Heading **West (-X)** -> Turn North (-Z): **Rot `[0, 270, 0]`**
+    - Heading **West (-X)** -> Turn North (-Z): **Rot `[0, 90, 0]`**
     - Heading **North (-Z)** -> Turn East (+X): **Rot `[0, 180, 0]`**
 - **Update Heading**: +90 degrees (e.g., East -> South).
+- **Next Cursor**: Move `1.0` unit in the **NEW** Heading direction.
+
+### 3. "Turn Left" (Counter-Clockwise 90°)
+- **Action**: Place `road-bend.glb`.
+- **Rotation Table (Re-Calibrated)**:
+    - Heading **East (+X)** -> Turn North (-Z): **Rot `[0, 180, 0]`**
+    - Heading **North (-Z)** -> Turn West (-X): **Rot `[0, 270, 0]`**
+    - Heading **West (-X)** -> Turn South (+Z): **Rot `[0, 0, 0]`**
+    - Heading **South (+Z)** -> Turn East (+X): **Rot `[0, 90, 0]`**
+- **Update Heading**: -90 degrees.
 - **Next Cursor**: Move `1.0` unit in the **NEW** Heading direction.
 
 ### 3. "Turn Left" (Counter-Clockwise 90°)
