@@ -260,22 +260,19 @@ impl Tool for BevySpawnPrimitiveTool {
         let tz = t.get(2).and_then(|v| v.as_f64()).unwrap_or(0.0);
 
         // Map "cube" to the actual asset path we generated
-        let asset_path = "cube.glb#Scene0";
+        let _asset_path = "cube.glb#Scene0";
 
-        // Fallback: Spawn Transform only to ensure connectivity
+        // Use the custom AxiomPrimitive component we added to bevy_ai_remote
+        // This triggers the spawn_primitives system on the game side to attach Mesh and Material.
         let payload = json!({
             "jsonrpc": "2.0",
             "method": "world.spawn_entity",
             "id": 1,
             "params": {
                 "components": {
-                    /*
-                    "bevy_scene::components::SceneRoot": {
-                        "Handle<bevy_scene::scene::Scene>": {
-                            "path": asset_path
-                        }
+                    "bevy_ai_remote::AxiomPrimitive": {
+                        "primitive_type": "cube"
                     },
-                    */
                     "bevy_transform::components::transform::Transform": {
                         "translation": [tx, ty, tz],
                         "rotation": [0.0, 0.0, 0.0, 1.0],

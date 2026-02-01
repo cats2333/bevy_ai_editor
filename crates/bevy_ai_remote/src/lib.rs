@@ -1,15 +1,17 @@
 use bevy::prelude::*;
-use bevy_remote::{http::RemoteHttpPlugin, RemotePlugin}; // Assuming bevy_remote is re-exported or available
+use bevy_remote::{http::RemoteHttpPlugin, RemotePlugin};
+use serde::{Deserialize, Serialize};
+
+/// Component to tag entities that should be rendered as a primitive shape.
+/// This simplifies the remote protocol: instead of sending complex Handle serialization,
+/// we just send "I want a Cube".
+#[derive(Component, Reflect, Default, Debug, Serialize, Deserialize)]
+#[reflect(Component)]
+pub struct AxiomPrimitive {
+    pub primitive_type: String,
+}
 
 /// Add this plugin to your Bevy app to enable remote control via Axiom.
-///
-/// # Example
-/// ```rust
-/// App::new()
-///     .add_plugins(DefaultPlugins)
-///     .add_plugins(BevyAiRemotePlugin)
-///     .run();
-/// ```
 pub struct BevyAiRemotePlugin;
 
 impl Plugin for BevyAiRemotePlugin {
@@ -18,6 +20,7 @@ impl Plugin for BevyAiRemotePlugin {
         if !app.is_plugin_added::<RemotePlugin>() {
             app.add_plugins(RemotePlugin::default());
         }
+
         use std::net::IpAddr;
 
         // Ensure HTTP transport is enabled with correct config
@@ -29,9 +32,40 @@ impl Plugin for BevyAiRemotePlugin {
             );
         }
 
-        info!("Bevy AI Remote Plugin initialized on port 15721");
+        // Register our custom component so BRP can see it
+        app.register_type::<AxiomPrimitive>();
 
-        // TODO: Register `editor/spawn` method here when API is stable.
-        // Currently relies on `world.spawn_entity` via BRP.
+        // Add system to "hydrate" primitives with actual meshes
+        app.add_systems(Update, spawn_primitives);
+
+        info!("Bevy AI Remote Plugin initialized on port 15721");
+    }
+}
+
+fn spawn_primitives(
+    mut commands: Commands,
+    query: Query<(Entity, &AxiomPrimitive), Added<AxiomPrimitive>>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    for (entity, primitive) in query.iter() {
+        info!("Hydrating primitive: {:?}", primitive.primitive_type);
+        match primitive.primitive_type.as_str() {
+            "cube" => {
+                commands.entity(entity).insert((
+                    Mesh3d(meshes.add(Cuboid::default())),
+                    MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
+                ));
+            }
+            "sphere" => {
+                commands.entity(entity).insert((
+                    Mesh3d(meshes.add(Sphere::default())),
+                    MeshMaterial3d(materials.add(Color::srgb(0.8, 0.7, 0.6))),
+                ));
+            }
+            _ => {
+                warn!("Unknown primitive type: {}", primitive.primitive_type);
+            }
+        }
     }
 }
