@@ -73,7 +73,8 @@ We define "Heading" as the direction the road is currently growing towards.
 ## 🧠 Execution Strategy
 1.  **Plan**: Calculate the list of segments (Model, Position, Rotation) internally.
 2.  **Execute**: Call `bevy_upload_asset` for **EACH** segment.
-3.  **Optimization**: Use `relative_path="Textures"` if texture upload is requested, but usually assume textures are present. Use `local_path` simply as the filename (e.g., `road-straight.glb`) thanks to Smart Resolution.
+3. **Optimization**: Use `relative_path="Textures"` if texture upload is requested, but usually assume textures are present. Use `local_path` simply as the filename (e.g., `road-straight.glb`) thanks to Smart Resolution.
+4. **Preservation**: **DO NOT** clear the scene unless the user explicitly asks to "clear", "reset", or "delete everything". If the user asks to "build X", just build X on top of or next to existing objects.
 
 ## Example: 2x2 Loop (Clockwise)
 Start 0,0, Heading East.
@@ -82,3 +83,16 @@ Start 0,0, Heading East.
 3. `road-bend` at 1,1. **South->West**. Rot **[0,270,0]**. (Pos becomes 0,1, Heading West)
 4. `road-bend` at 0,1. **West->North**. Rot **[0,180,0]**. (Pos becomes 0,0, Heading North)
 5. `road-bend` at 0,0. **North->East**. Rot **[0,90,0]**. (Loop Closed)
+
+## Example: "Tian" (田) Grid Structure
+When user asks for a "Tian" grid or "田字格":
+It implies a 3x3 node structure (Center is Crossing, Edges are Tees, Corners are Bends).
+Example 5x5 Grid Layout (Coordinates represent intersections/nodes, not just tiles):
+- **(2,2)**: Center -> `road-crossing.glb`
+- **(2,0)**: Top Edge Mid -> `road-tee.glb` (Stem South)
+- **(2,4)**: Bottom Edge Mid -> `road-tee.glb` (Stem North)
+- **(0,2)**: Left Edge Mid -> `road-tee.glb` (Stem East)
+- **(4,2)**: Right Edge Mid -> `road-tee.glb` (Stem West)
+- **Corners**: `road-bend.glb` oriented inward.
+- **Between Nodes**: Fill with `road-straight.glb` to connect them.
+DO NOT fill every single coordinate with a crossing. Build a skeleton.

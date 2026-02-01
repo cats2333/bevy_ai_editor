@@ -633,6 +633,23 @@ impl eframe::App for AxiomApp {
                         channel.history.clear();
                     }
                 }
+                top_panel::TopPanelAction::CopyLog => {
+                    let mut log_text = String::new();
+                    if let Some(channel) = self.channels.get(&self.active_channel_id) {
+                        for (role, content) in &channel.history {
+                            let content_str = match content {
+                                MessageContent::Text(t) => t.clone(),
+                                MessageContent::Parts(parts) => {
+                                    parts.iter().map(|p| p.text.clone().unwrap_or_default()).collect::<Vec<_>>().join("\n")
+                                }
+                            };
+                            log_text.push_str(&format!("[{}]: {}\n\n", role, content_str));
+                        }
+                    }
+                    if let Some(clipboard) = &mut self.clipboard {
+                        let _ = clipboard.set_text(log_text);
+                    }
+                }
                 top_panel::TopPanelAction::None => {}
             }
         });
