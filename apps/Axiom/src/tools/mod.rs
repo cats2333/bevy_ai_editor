@@ -6,6 +6,7 @@ pub mod lsp;
 pub mod multiedit;
 pub mod search;
 pub mod shell;
+pub mod smart_road;
 pub mod todo;
 
 use crate::types::AsyncMessage;
@@ -167,8 +168,11 @@ pub fn get_tools_for_profile(profile_name: &str, tx: Sender<AsyncMessage>) -> Ve
         Box::new(multiedit::MultiEditTool),
         Box::new(lsp::LspTool),
         Box::new(shell::ShellTool),
+        Box::new(smart_road::SmartRoadTool),
+        Box::new(smart_road::SpawnRoadGridTool),
+        Box::new(smart_road::RoadDriverTool),
         Box::new(bevy::BevyUploadAssetTool), // Now available to all agents
-        Box::new(bevy::BevyClearSceneTool),  // New: Clear Scene
+                                             // Box::new(bevy::BevyClearSceneTool),  // New: Clear Scene
                                              // Box::new(bevy::BevySpawnPrimitiveTool), // Temporarily disabled to force asset upload workflow
     ];
 

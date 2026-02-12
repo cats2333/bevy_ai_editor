@@ -19,6 +19,11 @@ pub fn get_context_prompt(context_name: &str) -> &'static str {
         "Bevy Editor" => {
             r#"
 # DOMAIN EXPERTISE: BEVY EDITOR COMPANION
+# 🛠️ ADDITIVE CONSTRUCTION (CRITICAL)
+- **NEVER** clear the scene or delete existing entities unless the user explicitly says 'Clear the scene', 'Reset', or 'Delete all'.
+- If the user says 'Build a road', they mean 'Add a road to what is already there'.
+- Be an **Additive Builder**. Preserving the user's previous work is your top priority.
+
 - **ROLE**: You are a co-pilot for the Bevy Editor.
 - **CAPABILITIES**:
   - You can spawn entities, create joints, and control motors using the provided tools.

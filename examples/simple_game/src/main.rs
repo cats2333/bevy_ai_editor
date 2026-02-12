@@ -1,7 +1,6 @@
 use bevy::prelude::*;
-use bevy_ai_remote::BevyAiRemotePlugin;
-
 use bevy::window::WindowResolution;
+use bevy_ai_remote::BevyAiRemotePlugin;
 
 fn main() {
     App::new()
@@ -24,84 +23,89 @@ fn camera_controller(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mut query: Query<&mut Transform, With<Camera3d>>,
 ) {
-    // let mut transform = query.single_mut(); // Removed unsafe unwrap
-    let speed = 10.0;
+    let speed = 20.0; // Faster for top-down view
     let mut velocity = Vec3::ZERO;
 
     for mut transform in query.iter_mut() {
-        // Forward/Backward (Z) - Relative to camera rotation? No, let's do simple World space first for stability,
-        // or local space if we want to "fly".
-        // Let's do local space (Fly).
-        let forward = transform.forward();
-        let right = transform.right();
-        let up = Vec3::Y;
+        // Move in X/Z plane (Top-Down navigation)
+        // Forward on screen is -Z (World North)
+        // Right on screen is +X (World East)
+
+        let forward = Vec3::NEG_Z;
+        let right = Vec3::X;
 
         if keyboard_input.pressed(KeyCode::KeyW) {
-            velocity += forward.as_vec3();
+            velocity += forward;
         }
         if keyboard_input.pressed(KeyCode::KeyS) {
-            velocity -= forward.as_vec3();
+            velocity -= forward;
         }
         if keyboard_input.pressed(KeyCode::KeyA) {
-            velocity -= right.as_vec3();
+            velocity -= right;
         }
         if keyboard_input.pressed(KeyCode::KeyD) {
-            velocity += right.as_vec3();
+            velocity += right;
         }
+
+        // Zoom (Up/Down)
         if keyboard_input.pressed(KeyCode::KeyE) {
-            velocity += up;
+            velocity += Vec3::Y;
         }
         if keyboard_input.pressed(KeyCode::KeyQ) {
-            velocity -= up;
+            velocity -= Vec3::Y;
         }
 
         if velocity != Vec3::ZERO {
             let translation = velocity.normalize() * speed * time.delta_secs();
             transform.translation += translation;
         }
-        // Break after first camera if we only want to control one (though loop works for all)
-        // break;
     }
 }
 
 fn draw_gizmos(mut gizmos: Gizmos) {
-    // X-axis (Red)
+    // X-axis (Red) -> Right
     gizmos.line(
         Vec3::ZERO,
         Vec3::new(10.0, 0.0, 0.0),
         Color::srgb(1.0, 0.0, 0.0),
     );
-    // Y-axis (Green)
+    // Y-axis (Green) -> Up (Vertical)
     gizmos.line(
         Vec3::ZERO,
         Vec3::new(0.0, 10.0, 0.0),
         Color::srgb(0.0, 1.0, 0.0),
     );
-    // Z-axis (Blue)
+    // Z-axis (Blue) -> Down (Screen)
     gizmos.line(
         Vec3::ZERO,
         Vec3::new(0.0, 0.0, 10.0),
         Color::srgb(0.0, 0.0, 1.0),
     );
 
-    // Grid (White, faint)
+    // Grid (XZ Floor) - White
+    // Shifted by 0.5 to make (0,0) appear as cell center (Tile-based look)
     gizmos.grid(
-        Isometry3d::default(),
+        Isometry3d::new(
+            Vec3::new(0.5, 0.0, 0.5),
+            Quat::from_rotation_x(std::f32::consts::FRAC_PI_2),
+        ),
         UVec2::new(20, 20),
         Vec2::new(1.0, 1.0),
-        Color::srgba(1.0, 1.0, 1.0, 0.1),
+        Color::srgba(1.0, 1.0, 1.0, 0.2),
     );
 }
 
 fn setup(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    _meshes: ResMut<Assets<Mesh>>,
+    _materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    // Camera
+    // Top-Down Orthographic-ish View
+    // Pos: (0, 50, 0)
+    // LookAt: (0, 0, 0) with Up = -Z (So -Z is "Up" on screen)
     commands.spawn((
         Camera3d::default(),
-        Transform::from_xyz(0.0, 5.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
+        Transform::from_xyz(0.0, 50.0, 0.0).looking_at(Vec3::ZERO, Vec3::NEG_Z),
     ));
 
     // Light
@@ -111,16 +115,8 @@ fn setup(
             shadows_enabled: true,
             ..default()
         },
-        Transform::from_xyz(4.0, 8.0, 4.0),
+        Transform::from_xyz(4.0, 50.0, 4.0),
     ));
 
-    // Plane
-    /*
-    commands.spawn((
-        Mesh3d(meshes.add(Plane3d::default().mesh().size(5.0, 5.0))),
-        MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
-    ));
-    */
-
-    println!("Simple Game Running with AI Remote Control...");
+    println!("Simple Game Running with AI Remote Control (Top-Down)...");
 }

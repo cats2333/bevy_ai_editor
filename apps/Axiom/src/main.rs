@@ -23,7 +23,7 @@ use crate::types::{AsyncMessage, ChannelState};
 use futures_util::StreamExt;
 
 // Import UI modules
-use crate::ui::{top_panel, sidebar, input, chat, file_tree};
+use crate::ui::{top_panel, sidebar, input, chat, file_tree, grid_planner};
 
 struct AxiomApp {
     api_key: String,
@@ -41,6 +41,9 @@ struct AxiomApp {
 
     // File Tree State
     file_tree_state: ui::file_tree::FileTreeState,
+    
+    // Grid Planner State
+    grid_planner_state: ui::grid_planner::GridPlannerState,
 
     // Chat & Input State
     input_text: String,
@@ -138,6 +141,7 @@ impl AxiomApp {
             active_channel_id: "global".to_string(),
             // sub_agents: std::collections::HashMap::new(),
             file_tree_state: ui::file_tree::FileTreeState::default(),
+            grid_planner_state: ui::grid_planner::GridPlannerState::default(),
             input_text: String::new(),
             pending_image: None,
             preview_texture: None,
@@ -301,7 +305,7 @@ impl AxiomApp {
                 _ => "assistant", 
             };
             
-            if role == "System" || role == "Error" { continue; }
+            if role == "Error" { continue; } // Filter only Errors, keep System/Tool results
 
             messages.push(Message {
                 role: api_role.to_string(),
@@ -622,6 +626,20 @@ impl eframe::App for AxiomApp {
             });
         */
 
+        // Update Grid Planner UI
+        match grid_planner::render_grid_planner(ctx, &mut self.grid_planner_state) {
+            ui::grid_planner::GridPlannerAction::SendToAI(prompt, img_b64) => {
+                if let Some(channel) = self.channels.get_mut(&self.active_channel_id) {
+                    channel.history.push(("Cats2333".to_string(), MessageContent::Text(prompt)));
+                }
+                // Inject the image
+                self.pending_image = Some(img_b64);
+                // Trigger send
+                self.send_message(true); 
+            }
+            ui::grid_planner::GridPlannerAction::None => {}
+        }
+
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             let action = top_panel::render_top_panel(
                 ui, 
@@ -637,18 +655,29 @@ impl eframe::App for AxiomApp {
                         channel.history.clear();
                     }
                 }
-                // top_panel::TopPanelAction::ClearScene => {
-                //     // Directly execute the Clear Scene tool without involving the LLM
-                //     let tool = crate::tools::bevy::BevyClearSceneTool;
-                //     let result = match tool.execute(serde_json::Value::Null) {
-                //         Ok(msg) => format!("✅ Scene Cleared: {}", msg),
-                //         Err(e) => format!("❌ Failed to Clear Scene: {}", e),
-                //     };
-                //     
-                //     if let Some(channel) = self.channels.get_mut(&self.active_channel_id) {
-                //         channel.history.push(("System".to_string(), MessageContent::Text(result)));
-                //     }
-                // }
+                top_panel::TopPanelAction::ClearScene => {
+                    // Manually send AxiomClearSceneRequest to Bevy
+                    let payload = serde_json::json!({
+                        "jsonrpc": "2.0",
+                        "method": "world.spawn_entity",
+                        "id": 1,
+                        "params": {
+                            "components": {
+                                "bevy_ai_remote::AxiomClearSceneRequest": {}
+                            }
+                        }
+                    });
+                    
+                    let tx_clone = self.tx.clone();
+                    self.rt.spawn(async move {
+                        let result = match ureq::post("http://127.0.0.1:15721").send_json(payload) {
+                            Ok(resp) => format!("✅ Scene Cleared. Status: {}", resp.status()),
+                            Err(e) => format!("❌ Failed to Clear Scene: {}", e),
+                        };
+                        
+                        let _ = tx_clone.send(AsyncMessage::Log(result));
+                    });
+                }
                 top_panel::TopPanelAction::CopyLog => {
                     let mut log_text = String::new();
                     if let Some(channel) = self.channels.get(&self.active_channel_id) {
@@ -667,6 +696,11 @@ impl eframe::App for AxiomApp {
                     }
                 }
                 top_panel::TopPanelAction::None => {}
+            }
+            
+            ui.add_space(5.0);
+            if ui.button("🎨 Open Grid Planner").clicked() {
+                self.grid_planner_state.is_open = true;
             }
         });
 

@@ -17,13 +17,26 @@ pub struct AxiomPrimitive {
 /// usage: spawn an entity with this component. The system will write the file
 /// to `assets/_remote_cache/` and then attach a SceneRoot to the entity.
 #[derive(Component, Reflect, Default, Debug, Serialize, Deserialize)]
-#[reflect(Component)]
+#[reflect(Component, Default)]
 pub struct AxiomRemoteAsset {
     pub filename: String,
     pub data_base64: String,
     // Optional sub-path relative to _remote_cache (e.g., "Textures")
     pub subdir: Option<String>,
 }
+
+/// Component to request despawning of another entity.
+/// Usage: spawn an entity with this component. The system will despawn the target entity and then the request entity.
+#[derive(Component, Reflect, Default, Debug, Serialize, Deserialize)]
+#[reflect(Component)]
+pub struct AxiomDespawnRequest {
+    pub target: u64,
+}
+
+/// Component to request clearing of all Axiom-spawned assets.
+#[derive(Component, Reflect, Default, Debug, Serialize, Deserialize)]
+#[reflect(Component)]
+pub struct AxiomClearSceneRequest;
 
 /// Add this plugin to your Bevy app to enable remote control via Axiom.
 pub struct BevyAiRemotePlugin;
@@ -49,11 +62,69 @@ impl Plugin for BevyAiRemotePlugin {
         // Register our custom components
         app.register_type::<AxiomPrimitive>();
         app.register_type::<AxiomRemoteAsset>();
+        app.register_type::<AxiomDespawnRequest>();
+        app.register_type::<AxiomClearSceneRequest>();
 
         // Add systems
-        app.add_systems(Update, (spawn_primitives, handle_remote_assets));
+        app.add_systems(
+            Update,
+            (
+                spawn_primitives,
+                handle_remote_assets,
+                handle_despawn_requests,
+                handle_clear_scene_requests,
+            ),
+        );
 
         info!("Bevy AI Remote Plugin initialized on port 15721");
+    }
+}
+
+fn handle_clear_scene_requests(
+    mut commands: Commands,
+    query: Query<Entity, Added<AxiomClearSceneRequest>>,
+    targets: Query<Entity, Or<(With<AxiomRemoteAsset>, With<AxiomPrimitive>)>>,
+) {
+    for request_entity in query.iter() {
+        info!("Processing clear scene request: Despawning all Axiom assets");
+
+        let mut count = 0;
+        for target in targets.iter() {
+            if let Ok(mut cmds) = commands.get_entity(target) {
+                cmds.despawn(); // Use despawn() as it's safe and recursive in 0.18 for components
+                count += 1;
+            }
+        }
+        info!("Cleared {} entities.", count);
+
+        // Despawn the request entity itself
+        commands.entity(request_entity).despawn();
+    }
+}
+
+fn handle_despawn_requests(
+    mut commands: Commands,
+    query: Query<(Entity, &AxiomDespawnRequest), Added<AxiomDespawnRequest>>,
+) {
+    for (request_entity, request) in query.iter() {
+        // Construct Entity from bits (u64)
+        let target_entity = Entity::from_bits(request.target);
+        info!("Processing despawn request for entity: {:?}", target_entity);
+
+        // Despawn the target recursively (to clean up children like Scene parts)
+        // Note: If entity doesn't exist, this might panic in older bevy or just warn.
+        // In recent Bevy (0.13+), `commands.entity(e)` panics if e is invalid generation?
+        // No, commands are deferred. `get_entity` returns Option.
+        // But `commands.entity(e)` creates an EntityCommands struct.
+        // Safe approach: use `commands.get_entity(e)` if available or just try.
+        // Standard way is just do it. If it doesn't exist, Bevy handles it gracefully usually.
+
+        if let Ok(mut entity_cmds) = commands.get_entity(target_entity) {
+            entity_cmds.despawn();
+        }
+
+        // Despawn the request entity itself so it doesn't pile up
+        commands.entity(request_entity).despawn();
     }
 }
 
